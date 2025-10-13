@@ -1,0 +1,12 @@
+WEB_URL:
+  SD: https://www.saucedemo.com
+
+ALL_CRED: 
+  NORMAL: standard_user
+  LOCKED: locked_out_user
+  PROBLEM: problem_user
+  GLITCH: performance_glitch_user
+  ERROR: error_user
+  VISUAL_BUG: visual_user
+
+PASSWORD: secret_sauce

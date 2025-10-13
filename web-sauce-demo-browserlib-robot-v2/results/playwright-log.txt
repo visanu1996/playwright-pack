@@ -1,0 +1,173 @@
+{"level":30,"time":"2025-10-13T04:12:45.499Z","pid":3799,"hostname":"visanus-air","msg":"Listening on 127.0.0.1:59339"}
+(node:3799) DeprecationWarning: Calling start() is no longer necessary. It can be safely omitted.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+{"level":30,"time":"2025-10-13T04:12:46.593Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method newBrowser"}
+{"level":30,"time":"2025-10-13T04:12:48.338Z","pid":3799,"hostname":"visanus-air","msg":"Adding browser to stack: chromium, version: 140.0.7339.16"}
+{"level":30,"time":"2025-10-13T04:12:48.339Z","pid":3799,"hostname":"visanus-air","msg":"End of node method newBrowser"}
+{"level":30,"time":"2025-10-13T04:12:48.339Z","pid":3799,"hostname":"visanus-air","msg":"Adding 0 contexts to browser"}
+{"level":30,"time":"2025-10-13T04:12:48.343Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method newContext"}
+{"level":30,"time":"2025-10-13T04:12:48.343Z","pid":3799,"hostname":"visanus-air","msg":"Creating new context with options: {\"acceptDownloads\":true,\"bypassCSP\":false,\"forcedColors\":\"none\",\"ignoreHTTPSErrors\":false,\"javaScriptEnabled\":true,\"offline\":false,\"reducedMotion\":\"no-preference\",\"serviceWorkers\":\"allow\",\"viewport\":null}"}
+{"level":30,"time":"2025-10-13T04:12:48.343Z","pid":3799,"hostname":"visanus-air","msg":"currentBrowser: {\"name\":\"chromium\",\"browser\":{\"_type\":\"Browser\",\"_guid\":\"browser@8b75ea7ba9453b1de0bca06042f356b6\"},\"headless\":false,\"_contextStack\":[],\"id\":\"browser=6fdfbdc8-66c6-4c54-bfe6-817b7d977a67\"}"}
+{"level":30,"time":"2025-10-13T04:12:48.343Z","pid":3799,"hostname":"visanus-air","msg":"Trace file: "}
+{"level":30,"time":"2025-10-13T04:12:48.348Z","pid":3799,"hostname":"visanus-air","msg":"Setting default timeout for context context=116c6649-a2c8-4fdf-b2da-bf998839958c to 10000"}
+{"level":30,"time":"2025-10-13T04:12:48.348Z","pid":3799,"hostname":"visanus-air","msg":"End of node method newContext"}
+{"level":30,"time":"2025-10-13T04:12:48.348Z","pid":3799,"hostname":"visanus-air","msg":"Changed active context: context=116c6649-a2c8-4fdf-b2da-bf998839958c"}
+{"level":30,"time":"2025-10-13T04:12:48.352Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method newPage"}
+{"level":30,"time":"2025-10-13T04:12:48.352Z","pid":3799,"hostname":"visanus-air","msg":"currentBrowser: {\"name\":\"chromium\",\"browser\":{\"_type\":\"Browser\",\"_guid\":\"browser@8b75ea7ba9453b1de0bca06042f356b6\"},\"headless\":false,\"_contextStack\":[{\"id\":\"context=116c6649-a2c8-4fdf-b2da-bf998839958c\",\"c\":{\"_type\":\"BrowserContext\",\"_guid\":\"browser-context@cdb855e9b07100d564634321c26029a0\"},\"pageStack\":[],\"options\":{\"acceptDownloads\":true,\"bypassCSP\":false,\"forcedColors\":\"none\",\"ignoreHTTPSErrors\":false,\"javaScriptEnabled\":true,\"offline\":false,\"reducedMotion\":\"no-preference\",\"serviceWorkers\":\"allow\",\"viewport\":null},\"traceFile\":\"\"}],\"id\":\"browser=6fdfbdc8-66c6-4c54-bfe6-817b7d977a67\"}"}
+{"level":30,"time":"2025-10-13T04:12:48.513Z","pid":3799,"hostname":"visanus-air","msg":"Video path: undefined"}
+{"level":30,"time":"2025-10-13T04:12:48.513Z","pid":3799,"hostname":"visanus-air","msg":"Changed active page"}
+{"level":30,"time":"2025-10-13T04:12:49.588Z","pid":3799,"hostname":"visanus-air","msg":"End of node method newPage"}
+{"level":30,"time":"2025-10-13T04:12:49.591Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:12:49.593Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:12:49.598Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:12:49.598Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:12:49.600Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:49.600Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='login_logo'] in page."}
+{"level":30,"time":"2025-10-13T04:12:49.611Z","pid":3799,"hostname":"visanus-air","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:49.614Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method fillText"}
+{"level":30,"time":"2025-10-13T04:12:49.614Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with id=user-name in page."}
+{"level":30,"time":"2025-10-13T04:12:49.619Z","pid":3799,"hostname":"visanus-air","msg":"End of node method fillText"}
+{"level":30,"time":"2025-10-13T04:12:49.622Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method fillText"}
+{"level":30,"time":"2025-10-13T04:12:49.622Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with id=password in page."}
+{"level":30,"time":"2025-10-13T04:12:49.626Z","pid":3799,"hostname":"visanus-air","msg":"End of node method fillText"}
+{"level":30,"time":"2025-10-13T04:12:49.628Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:49.628Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with id=login-button in page."}
+{"level":30,"time":"2025-10-13T04:12:49.652Z","pid":3799,"hostname":"visanus-air","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:49.654Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method click"}
+{"level":30,"time":"2025-10-13T04:12:49.654Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with id=login-button in page."}
+{"level":30,"time":"2025-10-13T04:12:49.696Z","pid":3799,"hostname":"visanus-air","msg":"End of node method click"}
+{"level":30,"time":"2025-10-13T04:12:49.698Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:49.698Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //*[@data-test='error'] in page."}
+{"level":30,"time":"2025-10-13T04:12:49.699Z","pid":3799,"hostname":"visanus-air","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:49.700Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getText"}
+{"level":30,"time":"2025-10-13T04:12:49.700Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //*[@data-test='error'] in page."}
+{"level":30,"time":"2025-10-13T04:12:49.705Z","pid":3799,"hostname":"visanus-air","msg":"Retrieved text for element //*[@data-test='error'] containing Epic sadface: Sorry, this user has been locked out."}
+{"level":30,"time":"2025-10-13T04:12:49.705Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getText"}
+{"level":30,"time":"2025-10-13T04:12:49.707Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method click"}
+{"level":30,"time":"2025-10-13T04:12:49.707Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //*[@data-test='error']/button in page."}
+{"level":30,"time":"2025-10-13T04:12:49.738Z","pid":3799,"hostname":"visanus-air","msg":"End of node method click"}
+{"level":30,"time":"2025-10-13T04:12:54.755Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:12:54.757Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:12:54.761Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:12:54.763Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:12:54.765Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:54.765Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='login_logo'] in page."}
+{"level":30,"time":"2025-10-13T04:12:54.767Z","pid":3799,"hostname":"visanus-air","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:54.769Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method fillText"}
+{"level":30,"time":"2025-10-13T04:12:54.769Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with id=user-name in page."}
+{"level":30,"time":"2025-10-13T04:12:54.773Z","pid":3799,"hostname":"visanus-air","msg":"End of node method fillText"}
+{"level":30,"time":"2025-10-13T04:12:54.776Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method fillText"}
+{"level":30,"time":"2025-10-13T04:12:54.776Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with id=password in page."}
+{"level":30,"time":"2025-10-13T04:12:54.778Z","pid":3799,"hostname":"visanus-air","msg":"End of node method fillText"}
+{"level":30,"time":"2025-10-13T04:12:54.780Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:54.780Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with id=login-button in page."}
+{"level":30,"time":"2025-10-13T04:12:54.802Z","pid":3799,"hostname":"visanus-air","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:54.804Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method click"}
+{"level":30,"time":"2025-10-13T04:12:54.804Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with id=login-button in page."}
+{"level":30,"time":"2025-10-13T04:12:54.888Z","pid":3799,"hostname":"visanus-air","msg":"End of node method click"}
+{"level":30,"time":"2025-10-13T04:12:59.904Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:12:59.906Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:12:59.912Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:12:59.913Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:12:59.917Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:59.917Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //span[text()='Products'] in page."}
+{"level":30,"time":"2025-10-13T04:12:59.918Z","pid":3799,"hostname":"visanus-air","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:59.923Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:59.923Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Bike Light')]]//button in page."}
+{"level":30,"time":"2025-10-13T04:12:59.952Z","pid":3799,"hostname":"visanus-air","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:12:59.955Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method click"}
+{"level":30,"time":"2025-10-13T04:12:59.955Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Bike Light')]]//button in page."}
+{"level":30,"time":"2025-10-13T04:12:59.991Z","pid":3799,"hostname":"visanus-air","msg":"End of node method click"}
+{"level":30,"time":"2025-10-13T04:12:59.993Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getText"}
+{"level":30,"time":"2025-10-13T04:12:59.994Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Bike Light')]]//div[@class='inventory_item_name '] in page."}
+{"level":30,"time":"2025-10-13T04:12:59.999Z","pid":3799,"hostname":"visanus-air","msg":"Retrieved text for element //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Bike Light')]]//div[@class='inventory_item_name '] containing Sauce Labs Bike Light"}
+{"level":30,"time":"2025-10-13T04:12:59.999Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.001Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.001Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Bike Light')]]//div[@class='inventory_item_desc'] in page."}
+{"level":30,"time":"2025-10-13T04:13:00.006Z","pid":3799,"hostname":"visanus-air","msg":"Retrieved text for element //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Bike Light')]]//div[@class='inventory_item_desc'] containing A red light isn't the desired state in testing but it sure helps when riding your bike at night. Water-resistant with 3 lighting modes, 1 AAA battery included."}
+{"level":30,"time":"2025-10-13T04:13:00.006Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.009Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.009Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Bike Light')]]//div[@class='inventory_item_price'] in page."}
+{"level":30,"time":"2025-10-13T04:13:00.013Z","pid":3799,"hostname":"visanus-air","msg":"Retrieved text for element //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Bike Light')]]//div[@class='inventory_item_price'] containing $9.99"}
+{"level":30,"time":"2025-10-13T04:13:00.013Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.017Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:13:00.017Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Backpack')]]//button in page."}
+{"level":30,"time":"2025-10-13T04:13:00.036Z","pid":3799,"hostname":"visanus-air","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:13:00.037Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method click"}
+{"level":30,"time":"2025-10-13T04:13:00.037Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Backpack')]]//button in page."}
+{"level":30,"time":"2025-10-13T04:13:00.072Z","pid":3799,"hostname":"visanus-air","msg":"End of node method click"}
+{"level":30,"time":"2025-10-13T04:13:00.074Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.074Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Backpack')]]//div[@class='inventory_item_name '] in page."}
+{"level":30,"time":"2025-10-13T04:13:00.077Z","pid":3799,"hostname":"visanus-air","msg":"Retrieved text for element //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Backpack')]]//div[@class='inventory_item_name '] containing Sauce Labs Backpack"}
+{"level":30,"time":"2025-10-13T04:13:00.077Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.079Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.079Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Backpack')]]//div[@class='inventory_item_desc'] in page."}
+{"level":30,"time":"2025-10-13T04:13:00.082Z","pid":3799,"hostname":"visanus-air","msg":"Retrieved text for element //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Backpack')]]//div[@class='inventory_item_desc'] containing carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection."}
+{"level":30,"time":"2025-10-13T04:13:00.082Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.084Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.084Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Backpack')]]//div[@class='inventory_item_price'] in page."}
+{"level":30,"time":"2025-10-13T04:13:00.087Z","pid":3799,"hostname":"visanus-air","msg":"Retrieved text for element //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Backpack')]]//div[@class='inventory_item_price'] containing $29.99"}
+{"level":30,"time":"2025-10-13T04:13:00.087Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.090Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:13:00.090Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Fleece Jacket')]]//button in page."}
+{"level":30,"time":"2025-10-13T04:13:00.119Z","pid":3799,"hostname":"visanus-air","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:13:00.121Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method click"}
+{"level":30,"time":"2025-10-13T04:13:00.121Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Fleece Jacket')]]//button in page."}
+{"level":30,"time":"2025-10-13T04:13:00.155Z","pid":3799,"hostname":"visanus-air","msg":"End of node method click"}
+{"level":30,"time":"2025-10-13T04:13:00.157Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.157Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Fleece Jacket')]]//div[@class='inventory_item_name '] in page."}
+{"level":30,"time":"2025-10-13T04:13:00.161Z","pid":3799,"hostname":"visanus-air","msg":"Retrieved text for element //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Fleece Jacket')]]//div[@class='inventory_item_name '] containing Sauce Labs Fleece Jacket"}
+{"level":30,"time":"2025-10-13T04:13:00.161Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.162Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.162Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Fleece Jacket')]]//div[@class='inventory_item_desc'] in page."}
+{"level":30,"time":"2025-10-13T04:13:00.166Z","pid":3799,"hostname":"visanus-air","msg":"Retrieved text for element //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Fleece Jacket')]]//div[@class='inventory_item_desc'] containing It's not every day that you come across a midweight quarter-zip fleece jacket capable of handling everything from a relaxing day outdoors to a busy day at the office."}
+{"level":30,"time":"2025-10-13T04:13:00.166Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.167Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.167Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Fleece Jacket')]]//div[@class='inventory_item_price'] in page."}
+{"level":30,"time":"2025-10-13T04:13:00.170Z","pid":3799,"hostname":"visanus-air","msg":"Retrieved text for element //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Fleece Jacket')]]//div[@class='inventory_item_price'] containing $49.99"}
+{"level":30,"time":"2025-10-13T04:13:00.170Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.177Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.178Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.180Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.180Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.182Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:13:00.182Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //span[text()='Products'] in page."}
+{"level":30,"time":"2025-10-13T04:13:00.183Z","pid":3799,"hostname":"visanus-air","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:13:00.186Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:13:00.186Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Backpack')]]//button in page."}
+{"level":30,"time":"2025-10-13T04:13:00.202Z","pid":3799,"hostname":"visanus-air","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:13:00.204Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method click"}
+{"level":30,"time":"2025-10-13T04:13:00.204Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Backpack')]]//button in page."}
+{"level":30,"time":"2025-10-13T04:13:00.238Z","pid":3799,"hostname":"visanus-air","msg":"End of node method click"}
+{"level":30,"time":"2025-10-13T04:13:00.240Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.240Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Backpack')]]//div[@class='inventory_item_name '] in page."}
+{"level":30,"time":"2025-10-13T04:13:00.243Z","pid":3799,"hostname":"visanus-air","msg":"Retrieved text for element //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Backpack')]]//div[@class='inventory_item_name '] containing Sauce Labs Backpack"}
+{"level":30,"time":"2025-10-13T04:13:00.243Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.248Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:13:00.249Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Fleece Jacket')]]//button in page."}
+{"level":30,"time":"2025-10-13T04:13:00.269Z","pid":3799,"hostname":"visanus-air","msg":"End of node method waitForElementState"}
+{"level":30,"time":"2025-10-13T04:13:00.271Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method click"}
+{"level":30,"time":"2025-10-13T04:13:00.271Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Fleece Jacket')]]//button in page."}
+{"level":30,"time":"2025-10-13T04:13:00.305Z","pid":3799,"hostname":"visanus-air","msg":"End of node method click"}
+{"level":30,"time":"2025-10-13T04:13:00.307Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.307Z","pid":3799,"hostname":"visanus-air","msg":"Strict mode is enabled, find Locator with //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Fleece Jacket')]]//div[@class='inventory_item_name '] in page."}
+{"level":30,"time":"2025-10-13T04:13:00.310Z","pid":3799,"hostname":"visanus-air","msg":"Retrieved text for element //div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'Fleece Jacket')]]//div[@class='inventory_item_name '] containing Sauce Labs Fleece Jacket"}
+{"level":30,"time":"2025-10-13T04:13:00.310Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getText"}
+{"level":30,"time":"2025-10-13T04:13:00.319Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.319Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.325Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.326Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.326Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.327Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.327Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.328Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.328Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.329Z","pid":3799,"hostname":"visanus-air","msg":"End of node method getBrowserCatalog"}
+{"level":30,"time":"2025-10-13T04:13:00.330Z","pid":3799,"hostname":"visanus-air","msg":"Changed active context: context=116c6649-a2c8-4fdf-b2da-bf998839958c"}
+{"level":30,"time":"2025-10-13T04:13:00.330Z","pid":3799,"hostname":"visanus-air","msg":"Changing current active page: page=d77042c1-bb48-4483-8553-b8f173c45ac4"}
+{"level":30,"time":"2025-10-13T04:13:00.330Z","pid":3799,"hostname":"visanus-air","msg":"Changed active page"}
+{"level":30,"time":"2025-10-13T04:13:00.332Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method closeContext"}
+{"level":30,"time":"2025-10-13T04:13:00.337Z","pid":3799,"hostname":"visanus-air","msg":"Removed page=a10caadc-c343-42f6-b254-1a32c3a48872 from context=116c6649-a2c8-4fdf-b2da-bf998839958c page stack"}
+{"level":30,"time":"2025-10-13T04:13:00.346Z","pid":3799,"hostname":"visanus-air","msg":"End of node method closeContext"}
+{"level":30,"time":"2025-10-13T04:13:01.379Z","pid":3799,"hostname":"visanus-air","msg":"Start of node method closeAllBrowsers"}
+{"level":30,"time":"2025-10-13T04:13:01.467Z","pid":3799,"hostname":"visanus-air","msg":"End of node method closeAllBrowsers"}
