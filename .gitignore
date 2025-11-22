@@ -1,7 +1,10 @@
-
+.DS_Store
 # Playwright - TypeScript
 node_modules/
 playwright-report/
 blob-report/
 playwright/.cache/
 playwright/.auth/
+
+# Playwright - Robot (Browser Lib)
+results/
