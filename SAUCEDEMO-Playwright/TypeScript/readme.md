@@ -1,0 +1,39 @@
+# Playwright TypeScript - SauceDemo Tests
+
+This folder contains Playwright tests using **TypeScript**, targeting the [SauceDemo](https://www.saucedemo.com/) web app.
+
+## Project Structure
+
+- **src/common/**: Common utilities and helper functions
+- **src/pages/**: Page objects for Saucedemo
+- **tests/**: Test scripts
+
+## Getting Started
+
+1. Install dependencies:
+
+run this inside the folder that contains package.json
+```bash
+npm install
+```
+
+2. Run Playwright tests:
+
+```bash
+npx playwright test
+```
+
+3. Run single test file:
+```bash
+npx playwright test tests/saucedemo.spec.ts
+```
+
+## Features
+
+Page Object Model (POM) implemented
+
+CommonKeywords for reusable actions (fillText, clickElement, verifyValue, etc.)
+
+Handles multiple pages/contexts
+
+Logs verification results to console

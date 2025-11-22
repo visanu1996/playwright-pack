@@ -8,7 +8,7 @@ export class CommonSauceDemo{
 
     async LoginSauce(userName:string,pass:string){
         await this.common.fillText(loginPage.loginPageLocators['inputName'],userName)
-        await this.common.fillText(loginPage.loginPageLocators['inputPass'],pass)
+        await this.common.fillText(loginPage.loginPageLocators['inputPass'],pass,true)
         await this.common.clickElement(loginPage.loginPageLocators['submitBtn'])
     }
 
