@@ -1,4 +1,6 @@
+SAUCEDEMO-Playwright/TypeScript/.DS_Store
 .DS_Store
+results/
 # Playwright - TypeScript
 node_modules/
 playwright-report/
@@ -7,4 +9,4 @@ playwright/.cache/
 playwright/.auth/
 
 # Playwright - Robot (Browser Lib)
-results/
+

@@ -7,3 +7,4 @@ A collection of Playwright test examples using:
 - TypeScript
 
 All tests target the SauceDemo web app.
+(Currently in progress)
