@@ -1,24 +1,22 @@
-import {expect} from '@playwright/test'
+import { expect } from '@playwright/test'
 import { CommonKeywords } from '../../common'
 import * as loginPage from './loginPage'
 
-export class CommonSauceDemo{
-    constructor(public readonly common:CommonKeywords){
+export class CommonSauceDemo {
+    constructor(public readonly common: CommonKeywords) {
     }
 
-    async LoginSauce(userName:string,pass:string){
-        await this.common.fillText(loginPage.loginPageLocators['inputName'],userName)
-        await this.common.fillText(loginPage.loginPageLocators['inputPass'],pass,true)
-        await this.common.clickElement(loginPage.loginPageLocators['submitBtn'])
+    async runFullTest(userName: string, pass: string) {
+        await loginPage.LoginSauce(this.common, userName, pass)
+
     }
 
-    async ToastError(errorText:string){
-        let locator = this.common.page.locator(loginPage.loginPageLocators['toast'])
-
-        if(await locator.isVisible()){
-            await expect(locator).toContainText(errorText)
-        }else{
-            throw new Error('No Toast were found on this page.')
+    async runLoginTest(userName: string, pass: string, checkToast: boolean = false, errorText: any = null){
+        await loginPage.LoginSauce(this.common, userName, pass)
+        if (checkToast) {
+            await loginPage.ToastError(this.common, errorText);
+            console.log(`Toast error match!`)
         }
     }
+    // adding full control for all SAUCEDEMO Page later.
 }
