@@ -53,26 +53,26 @@ export class CommonKeywords {
     this.page = page;
     }
 
-    async verifyPageArrive(locator: string, page: Page = this.page) {
-        await expect(page.locator(locator)).toBeVisible({ timeout: configFile.globalWait })
+    async verifyPageArrive(locator: string) {
+        await expect(this.page.locator(locator)).toBeVisible({ timeout: configFile.globalWait })
     }
 
-    async clickElement(locator: string, page: Page = this.page) {
-        await page.locator(locator).waitFor({ state: 'visible', timeout: configFile.globalWait })
-        await page.locator(locator).click()
+    async clickElement(locator: string) {
+        await this.page.locator(locator).waitFor({ state: 'visible', timeout: configFile.globalWait })
+        await this.page.locator(locator).click()
         console.log(`Element : ${locator} clicked.`)
     }
 
-    async fillText(locator: string, text: string, secret:boolean = false , page: Page = this.page) {
-        await page.locator(locator).waitFor({ state: 'visible', timeout: configFile.globalWait })
-        await page.locator(locator).fill(text)
+    async fillText(locator: string, text: string, secret:boolean = false) {
+        await this.page.locator(locator).waitFor({ state: 'visible', timeout: configFile.globalWait })
+        await this.page.locator(locator).fill(text)
         if(!secret) console.log(`filled locator ${locator} with : ${text}`)
     }
 
-    async verifyValueContain(locator: string, text: string, page: Page = this.page) {
+    async verifyValueContain(locator: string, text: string) {
         try{
-            await page.locator(locator).waitFor({ state: 'visible', timeout: configFile.globalWait })
-            await expect(page.locator(locator)).toHaveValue(text)
+            await this.page.locator(locator).waitFor({ state: 'visible', timeout: configFile.globalWait })
+            await expect(this.page.locator(locator)).toHaveValue(text)
             console.log(`Value of '${locator}' does contains ${text}`);
         }catch(error){
             console.log(`Value of '${locator}' does NOT contain '${text}'`);
@@ -80,9 +80,10 @@ export class CommonKeywords {
         }
     }
 
-    async getElementValue(locator: string, page: Page = this.page) {
-        await page.locator(locator).waitFor({ state: 'visible', timeout: configFile.globalWait })
-        const value = await page.locator(locator).inputValue()
+    async getElementValue(locator: string) {
+        await this.page.locator(locator).waitFor({ state: 'visible', timeout: configFile.globalWait })
+        const value = await this.page.locator(locator).inputValue()
+        return value
     }
 }
 // }

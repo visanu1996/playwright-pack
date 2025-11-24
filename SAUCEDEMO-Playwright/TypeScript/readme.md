@@ -34,6 +34,8 @@ Page Object Model (POM) implemented
 
 CommonKeywords for reusable actions (fillText, clickElement, verifyValue, etc.)
 
+CommonSauceDemo for centralize control for all page in sauce demo site
+
 Handles multiple pages/contexts
 
 Logs verification results to console
