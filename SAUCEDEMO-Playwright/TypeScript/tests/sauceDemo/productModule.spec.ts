@@ -36,4 +36,15 @@ test.describe.serial('QA-DEMO', () => {
     test('TC004 Remove invalid products', async()=>{
         await sauce.runAddProductTest(['MyName'],false)
     })
+    test('TC005 Reset App State, clear all items cart.', async()=>{
+        // defect from clear cart items (not remove added item from product page.)
+        await sauce.menuSelectTest('resetAppState')
+    })
+    test('TC006 Change Value : Z to A', async()=>{
+        await sauce.filterSelectTest('za')
+        await common.page.waitForTimeout(5000)
+    })
+    test('TC007 Get Products Detail', async()=>{
+        await sauce.getProductTest(['Backpack', 'Bike Light', 'T-Shirt'])
+    })
 })

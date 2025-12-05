@@ -10,11 +10,21 @@ export const productPageLocators = {
         itemDesc: "//div[@class='inventory_item_desc']",
         itemPrice: "//div[@class='inventory_item_price']",
         addBtn: "//button",
-    }
+    },
+    filter: "xpath=//select[@class='product_sort_container']"
 }
 
-// TODO : Add document for all functions
+const productsDetail: Record<string, any> = {};
 
+/**
+ * Add or remove product into the cart based on given name, 
+ * also check that item really added or not.
+ * No error if items is not visible on page nor available.
+ * @param common as CommonKeywords as playwright control.
+ * @param products  products as array. (e.g., "Bike Light", "Fleeces")
+ * @param isAdd default as true for adding items, if fault then remove items.
+ * @returns none.
+ */
 export async function addOrRemoveProducts(common: CommonKeywords, products: string[], isAdd: boolean = true) {
     for (let index = 0; index < products.length; index++) {
         const product = products[index];
@@ -46,11 +56,48 @@ export async function addOrRemoveProducts(common: CommonKeywords, products: stri
         }
     }
 }
-// TODO : complete get products detail
+
+/**
+ * Get products details based on given name, 
+ * No error if items is not visible on page nor available.
+ * @param common as CommonKeywords as playwright control.
+ * @param products  products as array. (e.g., "Bike Light", "Fleeces")
+ * @returns Object
+ */
 export async function getProducts(common: CommonKeywords, products: string[]) {
 
-}
-// TODO : complete select filter
-export async function changeFilter(common: CommonKeywords, method:string='az'){
+    for (let index = 0; index < products.length; index++) {
+        let product = products[index]
+        let product_box = productPageLocators.itemBox['mainBox'].replace('[TO_CHANGE]', product)
+        
+        try{
+            let productDesc = await common.page.locator(product_box + productPageLocators.itemBox['itemDesc']).textContent({timeout:2000})
+            let productPrice = await common.page.locator(product_box + productPageLocators.itemBox['itemPrice']).textContent({timeout:2000})
+            productsDetail[product] = {"description" : productDesc,"price":productPrice}
 
+        }catch{
+            console.log(`There is no product named : ${product}`);
+        }
+    
+    }
+    console.log(productsDetail);
+    return productsDetail
+}
+
+/**
+ * select filter by it values (force to use value only)
+ * @param common as CommonKeywords as playwright control.
+ * @param method  the value to be select. (e.g., "za", "lohi")
+ * @returns none.
+ */
+
+export async function changeFilterByValue(common: CommonKeywords, method:string='az'){
+    const methods = ['az','za','lohi','hilo']
+    const filterLocator = common.page.locator(productPageLocators.filter)
+    if (methods.includes(method)){
+        await filterLocator.selectOption({value:method})
+        await expect(filterLocator).toHaveValue(method)
+    }else{
+        console.log(`There is no such ${method} in ${methods}`);
+    }
 }
