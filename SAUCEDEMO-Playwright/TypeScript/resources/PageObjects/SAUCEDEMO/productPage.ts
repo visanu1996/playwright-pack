@@ -22,7 +22,7 @@ const productsDetail: Record<string, any> = {};
  * No error if items is not visible on page nor available.
  * @param common as CommonKeywords as playwright control.
  * @param products  products as array. (e.g., "Bike Light", "Fleeces")
- * @param isAdd default as true for adding items, if fault then remove items.
+ * @param [isAdd=true] add item if true, remove if false, default is true
  * @returns none.
  */
 export async function addOrRemoveProducts(common: CommonKeywords, products: string[], isAdd: boolean = true) {
