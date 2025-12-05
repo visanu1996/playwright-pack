@@ -44,4 +44,7 @@ test.describe.serial('QA-DEMO', () => {
         await sauce.filterSelectTest('za')
         await common.page.waitForTimeout(5000)
     })
+    test('TC007 Get Products Detail', async()=>{
+        await sauce.getProductTest(['Backpack', 'Bike Light', 'T-Shirt'])
+    })
 })

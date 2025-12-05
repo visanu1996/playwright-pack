@@ -14,6 +14,7 @@ export const productPageLocators = {
     filter: "xpath=//select[@class='product_sort_container']"
 }
 
+const productsDetail: Record<string, any> = {};
 
 /**
  * Add or remove product into the cart based on given name, 
@@ -55,9 +56,32 @@ export async function addOrRemoveProducts(common: CommonKeywords, products: stri
         }
     }
 }
-// TODO : complete get products detail
+
+/**
+ * Get products details based on given name, 
+ * No error if items is not visible on page nor available.
+ * @param common as CommonKeywords as playwright control.
+ * @param products  products as array. (e.g., "Bike Light", "Fleeces")
+ * @returns Object
+ */
 export async function getProducts(common: CommonKeywords, products: string[]) {
 
+    for (let index = 0; index < products.length; index++) {
+        let product = products[index]
+        let product_box = productPageLocators.itemBox['mainBox'].replace('[TO_CHANGE]', product)
+        
+        try{
+            let productDesc = await common.page.locator(product_box + productPageLocators.itemBox['itemDesc']).textContent({timeout:2000})
+            let productPrice = await common.page.locator(product_box + productPageLocators.itemBox['itemPrice']).textContent({timeout:2000})
+            productsDetail[product] = {"description" : productDesc,"price":productPrice}
+
+        }catch{
+            console.log(`There is no product named : ${product}`);
+        }
+    
+    }
+    console.log(productsDetail);
+    return productsDetail
 }
 
 /**

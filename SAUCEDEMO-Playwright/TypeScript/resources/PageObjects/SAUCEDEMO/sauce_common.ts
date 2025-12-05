@@ -32,6 +32,7 @@ export class CommonSauceDemo {
 
     }
 
+    // -------------------------------------- Below Code are just to test each module. --------------------------------------
     /**
      * Test login valid or invalid credentials, also check toast and it message if it's needed.
      * Use it in saucePage instead of loginPage for centralize reasons.
@@ -86,4 +87,16 @@ export class CommonSauceDemo {
         await productPage.changeFilterByValue(this.common,method)
     }
     // adding full control for all SAUCEDEMO Page later.
+
+
+    /**
+     * Get products details based on given name, 
+     * No error if items is not visible on page nor available.
+     * @param common as CommonKeywords as playwright control.
+     * @param products  products as array. (e.g., "Bike Light", "Fleeces")
+     * @returns Object
+     */
+    async getProductTest(product:string[]){
+        await productPage.getProducts(this.common,product)
+    }
 }
