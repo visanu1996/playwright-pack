@@ -23,13 +23,23 @@ test.describe.serial('QA-DEMO', () => {
         await common.context.close()
         await common.browser.close()
     })
-    
+
     test('TC001 Add valid products and check it from cart', async () => {
         await sauce.runAddProductTest(['Backpack', 'Bike Light', 'T-Shirt'])
-    })
-    test('TC002 Remove item from cart', async () => {
         await sauce.goToCart(false)
-        await sauce.removeCartItemsTest(['Backpack','T-Shirt'])
+        await sauce.verifyItemsInCartTest(['Backpack', 'Bike Light', 'T-Shirt'])
+    })
+
+    test('TC002 Remove item from cart', async () => {
+        await sauce.removeCartItemsTest(['Backpack', 'T-Shirt'])
+    })
+
+    test('TC003 Continue Shoping then add new items and commit purchases', async () => {
+        await sauce.backToShoppingTest()
+        await sauce.runAddProductTest(['Backpack'])
+        await sauce.goToCart(true)
+        await sauce.verifyItemsInCartTest(['Backpack', 'Bike Light'])
+        await sauce.comminPurchaseTest()
         await common.page.waitForTimeout(5000)
     })
 })

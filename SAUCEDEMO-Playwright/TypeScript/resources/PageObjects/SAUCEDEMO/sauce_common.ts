@@ -36,6 +36,7 @@ export class CommonSauceDemo {
     }
 
     // -------------------------------------- test module functions. --------------------------------------
+    // TODO: After testing all test function, it will be delete if all passed. then it will only be use in runFullTest.
     /**
      * Test login valid or invalid credentials, also check toast and it message if it's needed.
      * Use in sauce common for centralize reasons.
@@ -94,8 +95,20 @@ export class CommonSauceDemo {
      * @param products  products as array. (e.g., "Bike Light", "Fleeces")
      * @returns none
      */
-    async removeCartItemsTest(products: string[]){
+    async removeCartItemsTest(products: string[]) {
         await cartPage.removeProducts(this.common, products)
+    }
+
+    async verifyItemsInCartTest(products: string[]) {
+        await cartPage.verifyItemsInCart(this.common, products)
+    }
+
+    async backToShoppingTest(){
+        await cartPage.backToShopping(this.common)
+    }
+
+    async comminPurchaseTest(){
+        await cartPage.commitPurchase(this.common)
     }
 
     // -------------------------------------- Sauce Demo Common Functions. --------------------------------------
@@ -121,7 +134,7 @@ export class CommonSauceDemo {
      * @param [byLink=true] go to cart by link if true, clicking cart icon if false default is true
      * @returns none.
      */
-    async goToCart(byLink:boolean = true) {
+    async goToCart(byLink: boolean = true) {
         if (byLink) {
             await this.common.page.goto(common_locators.cartLink)
         } else {

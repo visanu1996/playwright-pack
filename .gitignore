@@ -7,6 +7,6 @@ playwright-report/
 blob-report/
 playwright/.cache/
 playwright/.auth/
-
+test-results/
 # Playwright - Robot (Browser Lib)
 

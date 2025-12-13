@@ -1,0 +1,1 @@
+// TODO: After commit purchase create functions to verify invoice page arrive, and others
