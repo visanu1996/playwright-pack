@@ -26,19 +26,18 @@ const productsDetail: Record<string, any> = {};
  * @returns none.
  */
 export async function addOrRemoveProducts(common: CommonKeywords, products: string[], isAdd: boolean = true) {
-    for (let index = 0; index < products.length; index++) {
-        const product = products[index];
+    for (const product of products) {
         let product_box = productPageLocators.itemBox['mainBox'].replace('[TO_CHANGE]', product)
         let addBtn = product_box + productPageLocators.itemBox['addBtn']
-        
+
         let btnText
         // can't find other way to handle failed from timeout.
-        try{
-            btnText = await common.page.locator(addBtn).textContent({timeout:2000})
-        }catch{
+        try {
+            btnText = await common.page.locator(addBtn).textContent({ timeout: 2000 })
+        } catch {
             btnText = null
         }
-        
+
         if (isAdd && btnText == 'Add to cart') {
             await common.page.locator(product_box + productPageLocators.itemBox['addBtn']).click()
         } else if (!isAdd && btnText == 'Remove') {
@@ -48,11 +47,11 @@ export async function addOrRemoveProducts(common: CommonKeywords, products: stri
             console.log(`Method want to delete : ${isAdd}, current btn status : ${btnText}\n`)
         }
 
-        if (btnText !== null){
+        if (btnText !== null) {
             btnText = await common.page.locator(addBtn).textContent()
             let verify = (isAdd) ? 'Remove' : 'Add to cart'
             await common.page.waitForTimeout(1000)   // wait for button text to change first.
-            await expect(common.page.locator(addBtn)).toHaveText(verify, { ignoreCase: true })           
+            await expect(common.page.locator(addBtn)).toHaveText(verify, { ignoreCase: true })
         }
     }
 }
@@ -66,19 +65,18 @@ export async function addOrRemoveProducts(common: CommonKeywords, products: stri
  */
 export async function getProducts(common: CommonKeywords, products: string[]) {
 
-    for (let index = 0; index < products.length; index++) {
-        let product = products[index]
+    for (const product in products) {
         let product_box = productPageLocators.itemBox['mainBox'].replace('[TO_CHANGE]', product)
-        
-        try{
-            let productDesc = await common.page.locator(product_box + productPageLocators.itemBox['itemDesc']).textContent({timeout:2000})
-            let productPrice = await common.page.locator(product_box + productPageLocators.itemBox['itemPrice']).textContent({timeout:2000})
-            productsDetail[product] = {"description" : productDesc,"price":productPrice}
 
-        }catch{
+        try {
+            let productDesc = await common.page.locator(product_box + productPageLocators.itemBox['itemDesc']).textContent({ timeout: 2000 })
+            let productPrice = await common.page.locator(product_box + productPageLocators.itemBox['itemPrice']).textContent({ timeout: 2000 })
+            productsDetail[product] = { "description": productDesc, "price": productPrice }
+
+        } catch {
             console.log(`There is no product named : ${product}`);
         }
-    
+
     }
     console.log(productsDetail);
     return productsDetail
@@ -91,13 +89,13 @@ export async function getProducts(common: CommonKeywords, products: string[]) {
  * @returns none.
  */
 
-export async function changeFilterByValue(common: CommonKeywords, method:string='az'){
-    const methods = ['az','za','lohi','hilo']
+export async function changeFilterByValue(common: CommonKeywords, method: string = 'az') {
+    const methods = ['az', 'za', 'lohi', 'hilo']
     const filterLocator = common.page.locator(productPageLocators.filter)
-    if (methods.includes(method)){
-        await filterLocator.selectOption({value:method})
+    if (methods.includes(method)) {
+        await filterLocator.selectOption({ value: method })
         await expect(filterLocator).toHaveValue(method)
-    }else{
+    } else {
         console.log(`There is no such ${method} in ${methods}`);
     }
 }

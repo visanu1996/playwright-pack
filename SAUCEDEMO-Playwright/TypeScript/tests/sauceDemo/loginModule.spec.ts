@@ -17,8 +17,7 @@ test.describe.serial('QA-DEMO', () => {
     })
     test.afterAll(async () => {
         await common.page.waitForTimeout(5000)
-        await common.context.close()
-        await common.browser.close()
+        common.closeWebDriver()
     })
 
     test('TC001 Login with lock credential', async () => {

@@ -16,26 +16,27 @@ export const cartPageLocators = {
 }
 
 /**
- * Remove Item from product page and verify that it is removed.
+ * Remove Item from cart and verify that it is removed.
+ * @param common - CommonKeywords instance
  * @param products - e.g., "Backpack", "Jacket")
  * @returns none.
  */
 export async function removeProducts(common: CommonKeywords, products: string[]) {
-    for(let index = 0 ; index < products.length ; index++){
-        const itemBox = cartPageLocators.cartItem.replace('[TO_CHANGE]',products[index])
+    for(const product of products){
+        const itemBox = cartPageLocators.cartItem.replace('[TO_CHANGE]',product)
         const removeItemBtn = itemBox+cartPageLocators.removeBtn
         await common.page.locator(removeItemBtn).click({force:true})
         await expect(common.page.locator(removeItemBtn)).not.toBeVisible()
-        console.log(`Item removed : ${products[index]}`)
+        console.log(`Item removed : ${product}`)
     }
 }
 
 export async function verifyItemsInCart(common: CommonKeywords, products: string[]) {
-    for(let index = 0 ; index < products.length ; index++){
-        const itemBox = cartPageLocators.cartItem.replace('[TO_CHANGE]',products[index])
+    for(const product of products){
+        const itemBox = cartPageLocators.cartItem.replace('[TO_CHANGE]',product)
         const removeItemBtn = itemBox+cartPageLocators.removeBtn
         await expect(common.page.locator(removeItemBtn)).toBeVisible()
-        console.log(`Confirm item in cart : ${products[index]}`)
+        console.log(`Confirm item in cart : ${product}`)
     }
 }
 
