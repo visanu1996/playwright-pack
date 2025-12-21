@@ -65,7 +65,7 @@ export async function addOrRemoveProducts(common: CommonKeywords, products: stri
  */
 export async function getProducts(common: CommonKeywords, products: string[]) {
 
-    for (const product in products) {
+    for (const product of products) {
         let product_box = productPageLocators.itemBox['mainBox'].replace('[TO_CHANGE]', product)
 
         try {
