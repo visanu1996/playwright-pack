@@ -3,6 +3,7 @@ import { CommonKeywords } from '../../common'
 import * as loginPage from './loginPage'
 import * as productPage from './productPage'
 import * as cartPage from './cartPage'
+import * as checkoutPage from './checkoutPage'
 
 const common_locators = {
     burger: "xpath=//button[@id='react-burger-menu-btn']",
@@ -14,7 +15,8 @@ const common_locators = {
         closeMenu: "xpath=//button[text()='Close Menu']"
     },
     cart: "xpath=//a[@class='shopping_cart_link']",
-    cartLink: "https://www.saucedemo.com/cart.html"
+    cartLink: "https://www.saucedemo.com/cart.html",
+    toast: "xpath=//h3[@data-test='error']"
 
 } as const
 // create key type to access key using params.
@@ -49,8 +51,26 @@ export class CommonSauceDemo {
     async runLoginTest(userName: string, pass: string, checkToast: boolean = false, errorText: any = null) {
         await loginPage.LoginSauce(this.common, userName, pass)
         if (checkToast) {
-            await loginPage.ToastError(this.common, errorText);
+            await this.ToastError(errorText);
             console.log(`Toast error match!`)
+        }
+    }
+
+     /**
+     * Test login valid or invalid credentials, also check toast and it message if it's needed.
+     * Use in sauce common for centralize reasons.
+     * @param fName  as firstname.
+     * @param lName as lastname.
+     * @param zipCode as a zipcode
+     * @param checkToast default is false, use to check that Toast is popped or not.
+     * @param errorText use with checkToast to see the expected contains text from toast.
+     * @returns none.
+     */
+    async runCheckoutTest(fName: string, lName: string, zipCode: string, checkToast: boolean = false, errorText: any = null) {
+        await checkoutPage.FillInformation(this.common, fName, lName, zipCode)
+        if (checkToast) {
+            await this.ToastError(errorText);
+            console.log('Toast error match!')
         }
     }
 
@@ -103,11 +123,11 @@ export class CommonSauceDemo {
         await cartPage.verifyItemsInCart(this.common, products)
     }
 
-    async backToShoppingTest(){
+    async backToShoppingTest() {
         await cartPage.backToShopping(this.common)
     }
 
-    async comminPurchaseTest(){
+    async commonPurchaseTest() {
         await cartPage.commitPurchase(this.common)
     }
 
@@ -139,6 +159,17 @@ export class CommonSauceDemo {
             await this.common.page.goto(common_locators.cartLink)
         } else {
             await this.common.page.locator(common_locators.cart).click()
+        }
+    }
+
+
+    async ToastError(errorText: string) {
+        let locator = this.common.page.locator(common_locators['toast'])
+
+        if (await locator.isVisible()) {
+            await expect(locator).toContainText(errorText)
+        } else {
+            throw new Error('No Toast were found on this page.')
         }
     }
 
