@@ -1,4 +1,3 @@
-import { expect } from "@playwright/test"
 import { CommonKeywords } from "../../common"
 
 export const checkoutPageLocators = {
@@ -8,6 +7,8 @@ export const checkoutPageLocators = {
         firstName: "xpath=//input[@id='first-name']",
         lastName: "xpath=//input[@id='last-name']",
         postalCode: "xpath=//input[@id='postal-code']",
+        next: "xpath=//input[@id='continue']",
+        back: "xpath=//button[@id='cancel']"
     },
     // sub page - Overview
     overviewPageHeader: "xpath=//span[@class='title' and text()='Checkout: Overview']",
@@ -32,14 +33,11 @@ export const checkoutPageLocators = {
 }
 
 export async function FillInformation(common: CommonKeywords, fName: string, lName: string, zipCode: string) {
-    let fNameField = checkoutPageLocators.informationForm.firstName
-    let lNameField = checkoutPageLocators.informationForm.lastName
-    let zipCodeField = checkoutPageLocators.informationForm.postalCode
+    await common.fillText(checkoutPageLocators.informationForm.firstName, fName)
+    await common.fillText(checkoutPageLocators.informationForm.lastName, lName)
+    await common.fillText(checkoutPageLocators.informationForm.postalCode, zipCode)
 
-    await common.fillText(fNameField, fName)
-    await common.fillText(lNameField, lName)
-    await common.fillText(zipCodeField, zipCode)
-
+    await common.clickElement(checkoutPageLocators.informationForm.next)
 }
 
 export async function SumTotalFromItems(common: CommonKeywords, expectedPrice: number) {

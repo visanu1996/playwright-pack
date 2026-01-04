@@ -20,15 +20,23 @@ test.describe.serial('QA-DEMO', () => {
         await common.verifyPageArrive(productPage.productPageLocators.productHeader)
 
         await sauce.runAddProductTest(['Backpack', 'Bike Light', 'T-Shirt'])
-        await sauce.goToCart(false)
+        await sauce.gotoPage("cart")
         await sauce.verifyItemsInCartTest(['Backpack', 'Bike Light', 'T-Shirt'])
+        await sauce.commitPurchaseTest()
+
     })
     test.afterAll(async () => {
         await common.page.waitForTimeout(5000)
-        common.closeWebDriver()
+        await common.closeWebDriver()
     })
 
     test('TC001 Not adding information in checkout information page.', async () => {
-        // TODO : 
+        await sauce.runCheckoutTest("", "", "", true, "First Name is required")
+        await sauce.runCheckoutTest("Visan", "", "1235", true, "Last Name is required")
+        await sauce.runCheckoutTest("Visan", "Laster", "", true, "Postal Code is required")
+        await sauce.runCheckoutTest("Visan", "Laster", "12345")
+    })
+    test('TC002 Check total price, items price compare to total price.', async () => {
+        await common.page.waitForTimeout(5000)
     })
 })

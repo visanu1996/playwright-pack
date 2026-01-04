@@ -14,13 +14,18 @@ const common_locators = {
         resetAppState: "xpath=//a[text()='Reset App State']",
         closeMenu: "xpath=//button[text()='Close Menu']"
     },
-    cart: "xpath=//a[@class='shopping_cart_link']",
-    cartLink: "https://www.saucedemo.com/cart.html",
+    pages: {
+        cart: "xpath=//a[@class='shopping_cart_link']",
+        cartLink: "https://www.saucedemo.com/cart.html",
+        productLink: "https://www.saucedemo.com/inventory.html",
+        checkout: "https://www.saucedemo.com/checkout-step-one.html",
+    },
     toast: "xpath=//h3[@data-test='error']"
 
 } as const
 // create key type to access key using params.
 type MenuKeys = keyof typeof common_locators.menuBar;
+type CommonLocatorPage = keyof typeof common_locators.pages;
 
 export class CommonSauceDemo {
     constructor(public readonly common: CommonKeywords) {
@@ -56,22 +61,29 @@ export class CommonSauceDemo {
         }
     }
 
-     /**
-     * Test login valid or invalid credentials, also check toast and it message if it's needed.
-     * Use in sauce common for centralize reasons.
-     * @param fName  as firstname.
-     * @param lName as lastname.
-     * @param zipCode as a zipcode
-     * @param checkToast default is false, use to check that Toast is popped or not.
-     * @param errorText use with checkToast to see the expected contains text from toast.
-     * @returns none.
-     */
+    /**
+    * Test login valid or invalid credentials, also check toast and it message if it's needed.
+    * Use in sauce common for centralize reasons.
+    * @param fName  as firstname.
+    * @param lName as lastname.
+    * @param zipCode as a zipcode
+    * @param checkToast default is false, use to check that Toast is popped or not.
+    * @param errorText use with checkToast to see the expected contains text from toast.
+    * @returns none.
+    */
     async runCheckoutTest(fName: string, lName: string, zipCode: string, checkToast: boolean = false, errorText: any = null) {
         await checkoutPage.FillInformation(this.common, fName, lName, zipCode)
         if (checkToast) {
-            await this.ToastError(errorText);
+            await this.ToastError(errorText)
             console.log('Toast error match!')
         }
+    }
+    async backToShoppingTest() {
+        await cartPage.backToShopping(this.common)
+    }
+
+    async commitPurchaseTest() {
+        await cartPage.commitPurchase(this.common)
     }
 
     /**
@@ -123,14 +135,6 @@ export class CommonSauceDemo {
         await cartPage.verifyItemsInCart(this.common, products)
     }
 
-    async backToShoppingTest() {
-        await cartPage.backToShopping(this.common)
-    }
-
-    async commonPurchaseTest() {
-        await cartPage.commitPurchase(this.common)
-    }
-
     // -------------------------------------- Sauce Demo Common Functions. --------------------------------------
     /**
      * Click a menu based on selected menu name
@@ -149,19 +153,13 @@ export class CommonSauceDemo {
         }
     }
 
-    /**
-     * Click cart icon on product page.
-     * @param [byLink=true] go to cart by link if true, clicking cart icon if false default is true
-     * @returns none.
-     */
-    async goToCart(byLink: boolean = true) {
+    async gotoPage(pageName: CommonLocatorPage, byLink: boolean = false) {
         if (byLink) {
-            await this.common.page.goto(common_locators.cartLink)
+            await this.common.page.goto(common_locators.pages[pageName])
         } else {
-            await this.common.page.locator(common_locators.cart).click()
+            await this.common.page.locator(common_locators.pages[pageName]).click()
         }
     }
-
 
     async ToastError(errorText: string) {
         let locator = this.common.page.locator(common_locators['toast'])
