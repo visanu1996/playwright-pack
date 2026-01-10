@@ -37,6 +37,9 @@ test.describe.serial('QA-DEMO', () => {
         await sauce.runCheckoutTest("Visan", "Laster", "12345")
     })
     test('TC002 Check total price, items price compare to total price.', async () => {
-        await common.page.waitForTimeout(5000)
+        await checkoutPage.SumTotalFromItems(common,55.97)
+    })
+    test('TC003 Get Shipping Information',async() => {
+        await checkoutPage.GetShippingInformation(common)
     })
 })
