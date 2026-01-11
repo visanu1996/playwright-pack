@@ -22,7 +22,7 @@ const common_locators = {
     },
     toast: "xpath=//h3[@data-test='error']"
 
-} as const
+}
 // create key type to access key using params.
 type MenuKeys = keyof typeof common_locators.menuBar;
 type CommonLocatorPage = keyof typeof common_locators.pages;
@@ -37,13 +37,64 @@ export class CommonSauceDemo {
      * @param pass as a password for login.
      * @returns none.
      */
-    async runFullTest(userName: string, pass: string) {
+    async runFullTest(userName: string, pass: string, products: string[], fName : string, lName : string, zipcode: string ) {
+        // Step 1 : Login
         await loginPage.LoginSauce(this.common, userName, pass)
+        // Step 2 : added items and get products detail.
+        await this.common.verifyPageArrive(productPage.productPageLocators.productHeader)
+        await productPage.addOrRemoveProducts(this.common,products)
+        await this.gotoPage("cart")
+        // Step 3 : Verify Items in cart.
+        await cartPage.verifyItemsInCart(this.common, products)
+        await cartPage.commitPurchase(this.common)
+        // Step 4 : Confirm Shipping.
+        await checkoutPage.FillInformation(this.common, fName, lName, zipcode)
+        await checkoutPage.GetShippingInformation(this.common)
+        await checkoutPage.VerifyCompleteShipping(this.common,"Thank you for your order!")  // Don't need to check fail case anymore.
+        // Step 5 : Log out.
+        await this.menuSelect("logout")
+    }
+// -------------------------------------- Sauce Demo Common Functions. --------------------------------------
+    /**
+     * Click a menu based on selected menu name
+     * @param menuName - The menu key (e.g., "about", "logout")
+     * @returns none.
+     */
+    async menuSelect(menuName: MenuKeys) {
+        if (menuName in common_locators.menuBar) {
+            await this.common.page.locator(common_locators.burger).click()
+            await this.common.page.locator(common_locators.menuBar[menuName]).waitFor({ 'state': 'visible' })
+            await this.common.page.locator(common_locators.menuBar[menuName]).click({ force: true })
+            
+            let closeMenuBtn = this.common.page.locator(common_locators.menuBar['closeMenu'])
+            if (await closeMenuBtn.isVisible()) closeMenuBtn.click() 
 
+        } else {
+            console.log(`There is no such a key named [${menuName}] in menu bar.`);
+
+        }
     }
 
+    async gotoPage(pageName: CommonLocatorPage, byLink: boolean = false) {
+        if (byLink) {
+            await this.common.page.goto(common_locators.pages[pageName])
+        } else {
+            await this.common.page.locator(common_locators.pages[pageName]).click()
+        }
+    }
+
+    async ToastError(errorText: string) {
+        let locator = this.common.page.locator(common_locators['toast'])
+
+        if (await locator.isVisible()) {
+            await expect(locator).toContainText(errorText)
+        } else {
+            throw new Error('No Toast were found on this page.')
+        }
+    }
+
+
     // -------------------------------------- test module functions. --------------------------------------
-    // TODO: After testing all test function, it will be delete if all passed. then it will only be use in runFullTest.
     /**
      * Test login valid or invalid credentials, also check toast and it message if it's needed.
      * Use in sauce common for centralize reasons.
@@ -134,41 +185,4 @@ export class CommonSauceDemo {
     async verifyItemsInCartTest(products: string[]) {
         await cartPage.verifyItemsInCart(this.common, products)
     }
-
-    // -------------------------------------- Sauce Demo Common Functions. --------------------------------------
-    /**
-     * Click a menu based on selected menu name
-     * @param menuName - The menu key (e.g., "about", "logout")
-     * @returns none.
-     */
-    async menuSelect(menuName: MenuKeys) {
-        if (menuName in common_locators.menuBar) {
-            await this.common.page.locator(common_locators.burger).click()
-            await this.common.page.locator(common_locators.menuBar[menuName]).waitFor({ 'state': 'visible' })
-            await this.common.page.locator(common_locators.menuBar[menuName]).click({ force: true })
-            await this.common.page.locator(common_locators.menuBar['closeMenu']).click()
-        } else {
-            console.log(`There is no such a key named [${menuName}] in menu bar.`);
-
-        }
-    }
-
-    async gotoPage(pageName: CommonLocatorPage, byLink: boolean = false) {
-        if (byLink) {
-            await this.common.page.goto(common_locators.pages[pageName])
-        } else {
-            await this.common.page.locator(common_locators.pages[pageName]).click()
-        }
-    }
-
-    async ToastError(errorText: string) {
-        let locator = this.common.page.locator(common_locators['toast'])
-
-        if (await locator.isVisible()) {
-            await expect(locator).toContainText(errorText)
-        } else {
-            throw new Error('No Toast were found on this page.')
-        }
-    }
-
 }
