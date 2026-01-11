@@ -9,7 +9,7 @@ let common: commonPage.CommonKeywords
 let sauce: sourceDemo.CommonSauceDemo
 
 test.describe.serial('QA-DEMO', () => {
-    test.setTimeout(0)
+    test.setTimeout(0);
     test.beforeAll(async () => {
         common = new commonPage.CommonKeywords()
         sauce = new sourceDemo.CommonSauceDemo(common)
@@ -20,15 +20,30 @@ test.describe.serial('QA-DEMO', () => {
         await common.verifyPageArrive(productPage.productPageLocators.productHeader)
 
         await sauce.runAddProductTest(['Backpack', 'Bike Light', 'T-Shirt'])
-        await sauce.goToCart(false)
+        await sauce.gotoPage("cart")
         await sauce.verifyItemsInCartTest(['Backpack', 'Bike Light', 'T-Shirt'])
-    })
+        await sauce.commitPurchaseTest()
+
+    });
     test.afterAll(async () => {
         await common.page.waitForTimeout(5000)
-        common.closeWebDriver()
-    })
+        await common.closeWebDriver()
+    });
 
     test('TC001 Not adding information in checkout information page.', async () => {
-        // TODO : 
-    })
-})
+        await sauce.runCheckoutTest("", "", "", true, "First Name is required")
+        await sauce.runCheckoutTest("Visan", "", "1235", true, "Last Name is required")
+        await sauce.runCheckoutTest("Visan", "Laster", "", true, "Postal Code is required")
+        await sauce.runCheckoutTest("Visan", "Laster", "12345")
+    });
+    test('TC002 Check total price, items price compare to total price.', async () => {
+        await checkoutPage.SumTotalFromItems(common, 55.97)
+    });
+    test('TC003 Get Shipping Information', async () => {
+        await checkoutPage.GetShippingInformation(common)
+    });
+
+    test('TC004 Verify complete message', async () => {
+        await checkoutPage.VerifyCompleteShipping(common, "Thank you for your order!")
+    });
+});

@@ -1,4 +1,3 @@
-import { expect } from "@playwright/test"
 import { CommonKeywords } from "../../common"
 
 export const checkoutPageLocators = {
@@ -8,55 +7,107 @@ export const checkoutPageLocators = {
         firstName: "xpath=//input[@id='first-name']",
         lastName: "xpath=//input[@id='last-name']",
         postalCode: "xpath=//input[@id='postal-code']",
+        next: "xpath=//input[@id='continue']",
+        back: "xpath=//button[@id='cancel']"
     },
     // sub page - Overview
     overviewPageHeader: "xpath=//span[@class='title' and text()='Checkout: Overview']",
 
     billingInformation: {
-        shippingId: "xpath=//div[@class='summary_value_label']",
-        shippingInformation: "xpath=//div[@class='summary_value_label']",
+        shippingId: "xpath=//div[text()='Payment Information:']/following-sibling::div[1]",
+        shippingInformation: "xpath=//div[text()='Shipping Information:']/following-sibling::div[1]",
         price: "xpath=//div[@class='summary_subtotal_label']",
         tax: "xpath=//div[@class='summary_tax_label']",
         totalPrice: "xpath=//div[@class='summary_total_label']"
     },
 
     itemBox: {
-        all: "xpath=//div[@class='cart_item_label'",
+        all: "xpath=//div[@class='cart_item_label']",
         individual: "xpath=//div[@class='cart_item_label' and .//div[@class='inventory_item_name' and contains(text(),'[TO_CHANGE]')]]",
-        itemPrice: "//div[@class='inventory_item_name']",
-        itemName: "//div[@class='item_pricebar']"
+        itemName: "//div[@class='inventory_item_name']",
+        itemPrice: "//div[@class='item_pricebar']"
     },
+    confirmShippingBtn: "xpath=//button[@id='finish']",
     // sub page - Complete
     completePageHeader: "xpath=//span[@class='title' and text()='Checkout: Complete!']",
-
+    // msgHeader: "xpath=//h2[contains(text(),'Thank you for your order!')]",
+    msgHeader: "xpath=//h2[@class='complete-header']",
+    msgDetail: "xpath=//h2[@class='complete-header']/following-sibling::div",
+    backToHomeBtn: "xpath=//button[@id='back-to-products']"
 }
 
+    /**
+    * Fill checkout information.
+    * @param common  as CommonKeywords.
+    * @param fName as first name.
+    * @param lName as last name.
+    * @param zipCode as zip code.
+    * @returns none.
+    */
 export async function FillInformation(common: CommonKeywords, fName: string, lName: string, zipCode: string) {
-    let fNameField = checkoutPageLocators.informationForm.firstName
-    let lNameField = checkoutPageLocators.informationForm.lastName
-    let zipCodeField = checkoutPageLocators.informationForm.postalCode
+    await common.fillText(checkoutPageLocators.informationForm.firstName, fName)
+    await common.fillText(checkoutPageLocators.informationForm.lastName, lName)
+    await common.fillText(checkoutPageLocators.informationForm.postalCode, zipCode)
 
-    await common.fillText(fNameField, fName)
-    await common.fillText(lNameField, lName)
-    await common.fillText(zipCodeField, zipCode)
-
+    await common.clickElement(checkoutPageLocators.informationForm.next)
 }
 
+    /**
+    * Sum total price from each items and validate it with expected price.
+    * @param common  as CommonKeywords.
+    * @param expectedPrice as the expected price to validate.
+    * @returns totalPrice
+    */
 export async function SumTotalFromItems(common: CommonKeywords, expectedPrice: number) {
     let totalPrice = 0;
     let items = await common.page.locator(checkoutPageLocators.itemBox.all).all()
 
     for (const item of items) {
-        let raw = (await item.locator(checkoutPageLocators.itemBox.itemPrice).textContent()) ?? ''
+        let raw = (await item.locator(checkoutPageLocators.itemBox.itemPrice).innerText()) ?? ''
         let price = parseFloat(raw.split('$').pop()?.trim() ?? '')
         if (!isNaN(price)) totalPrice += price
     }
 
-    if (expectedPrice != totalPrice) throw new Error(`Total price and Expected price is not equal.`)
-
     console.log(`Total price is : ${totalPrice}`)
+    if (expectedPrice != totalPrice) throw new Error(`Total price and Expected price is not equal.`)
     return totalPrice
 }
 
-// TODO: Log shipping information and Id
-// TODO: Verify Completed msg.
+    /**
+    * Get shipping information and return as object.
+    * @param common  as CommonKeywords.
+    * @returns shippingInformation
+    */
+export async function GetShippingInformation(common: CommonKeywords) {
+    const shipLocator = checkoutPageLocators.billingInformation
+    let maxTimeout = 5000
+    let shippingInformation : {[keys:string]: any} = {}
+
+    shippingInformation['id'] = await common.page.locator(shipLocator.shippingId).innerText({timeout:maxTimeout})
+    shippingInformation['delivery'] = await common.page.locator(shipLocator.shippingInformation).innerText({timeout:maxTimeout})
+    shippingInformation['price'] = await common.page.locator(shipLocator.price).innerText({timeout:maxTimeout})
+    shippingInformation['tax'] = await common.page.locator(shipLocator.tax).innerText({timeout:maxTimeout})
+    shippingInformation['total'] = await common.page.locator(shipLocator.totalPrice).innerText({timeout:maxTimeout})
+
+    console.log(`Shipping Information : \n${JSON.stringify(shippingInformation)}`);
+    
+    return shippingInformation
+}
+
+    /**
+    * Get shipping information and return as object.
+    * @param common  as CommonKeywords.
+    * @param textContain as contains text to check from complete header.
+    * @returns none.
+    */
+export async function VerifyCompleteShipping(common: CommonKeywords, textContain: string){
+
+    await common.clickElement(checkoutPageLocators.confirmShippingBtn)
+    await common.verifyPageArrive(checkoutPageLocators.completePageHeader)
+    await common.verifyValueContain(checkoutPageLocators.msgHeader,textContain)
+
+    let messageDetail = await common.page.locator(checkoutPageLocators.msgDetail).innerText()
+    console.log(messageDetail);
+    
+    await common.clickElement(checkoutPageLocators.backToHomeBtn)
+}

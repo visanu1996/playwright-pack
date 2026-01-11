@@ -68,7 +68,14 @@ export class CommonKeywords {
         await this.page.locator(locator).click()
         console.log(`Element : ${locator} clicked.`)
     }
-
+    /**
+     * 
+     * Fill text or value to specific locator.
+     * Secret default as false, if it's true it will not log the text.
+     * @param locator
+     * @param text
+     * @param secret
+     */
     async fillText(locator: string, text: string, secret: boolean = false) {
         await this.page.locator(locator).waitFor({ state: 'visible', timeout: configFile.globalWait })
         await this.page.locator(locator).fill(text)
@@ -78,7 +85,7 @@ export class CommonKeywords {
     async verifyValueContain(locator: string, text: string) {
         try {
             await this.page.locator(locator).waitFor({ state: 'visible', timeout: configFile.globalWait })
-            let value = await this.page.locator(locator).inputValue()
+            let value = await this.page.locator(locator).innerText()
             expect(value).toContain(text)
             console.log(`Value of '${locator}' does contains ${text}`);
         } catch (error) {

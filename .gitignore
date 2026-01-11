@@ -8,5 +8,6 @@ blob-report/
 playwright/.cache/
 playwright/.auth/
 test-results/
+config/user.ts
 # Playwright - Robot (Browser Lib)
 
