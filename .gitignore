@@ -8,6 +8,7 @@ blob-report/
 playwright/.cache/
 playwright/.auth/
 test-results/
-config/user.ts
+SAUCEDEMO-Playwright/TypeScript/config/user.ts
+TypeScript/config/user.ts
 # Playwright - Robot (Browser Lib)
 
