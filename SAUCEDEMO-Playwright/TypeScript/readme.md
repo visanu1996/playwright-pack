@@ -11,6 +11,7 @@ This folder contains Playwright tests using **TypeScript**, targeting the [Sauce
 ## Getting Started
 
 1. Install dependencies:
+make sure you're in TypeScript project root, not outside.
 
 run this inside the folder that contains package.json
 ```bash
@@ -25,7 +26,7 @@ npx playwright test
 
 3. Run single test file:
 ```bash
-npx playwright test tests/saucedemo.spec.ts
+npx playwright test sauceDemo/specific_file.spec.ts
 ```
 
 ## Features
