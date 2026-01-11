@@ -9,6 +9,6 @@ playwright/.cache/
 playwright/.auth/
 test-results/
 SAUCEDEMO-Playwright/TypeScript/config/user.ts
-TypeScript/config/user.ts
+
 # Playwright - Robot (Browser Lib)
 
