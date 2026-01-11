@@ -42,4 +42,8 @@ test.describe.serial('QA-DEMO', () => {
     test('TC003 Get Shipping Information',async() => {
         await checkoutPage.GetShippingInformation(common)
     })
+
+    test('TC004 Verify complete message', async() =>{
+        await checkoutPage.VerifyCompleteShipping(common,"Thank you for your order!")
+    })
 })

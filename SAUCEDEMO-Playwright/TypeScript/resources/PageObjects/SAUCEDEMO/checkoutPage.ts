@@ -27,9 +27,13 @@ export const checkoutPageLocators = {
         itemName: "//div[@class='inventory_item_name']",
         itemPrice: "//div[@class='item_pricebar']"
     },
+    confirmShippingBtn: "xpath=//button[@id='finish']",
     // sub page - Complete
     completePageHeader: "xpath=//span[@class='title' and text()='Checkout: Complete!']",
-
+    // msgHeader: "xpath=//h2[contains(text(),'Thank you for your order!')]",
+    msgHeader: "xpath=//h2[@class='complete-header']",
+    msgDetail: "xpath=//h2[@class='complete-header']/following-sibling::div",
+    backToHomeBtn: "xpath=//button[@id='back-to-products']"
 }
 
     /**
@@ -90,4 +94,20 @@ export async function GetShippingInformation(common: CommonKeywords) {
     return shippingInformation
 }
 
-// TODO: Verify Completed msg.
+    /**
+    * Get shipping information and return as object.
+    * @param common  as CommonKeywords.
+    * @param textContain as contains text to check from complete header.
+    * @returns none.
+    */
+export async function VerifyCompleteShipping(common: CommonKeywords, textContain: string){
+
+    await common.clickElement(checkoutPageLocators.confirmShippingBtn)
+    await common.verifyPageArrive(checkoutPageLocators.completePageHeader)
+    await common.verifyValueContain(checkoutPageLocators.msgHeader,textContain)
+
+    let messageDetail = await common.page.locator(checkoutPageLocators.msgDetail).innerText()
+    console.log(messageDetail);
+    
+    await common.clickElement(checkoutPageLocators.backToHomeBtn)
+}
