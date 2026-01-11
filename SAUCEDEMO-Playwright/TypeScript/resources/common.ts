@@ -85,7 +85,7 @@ export class CommonKeywords {
     async verifyValueContain(locator: string, text: string) {
         try {
             await this.page.locator(locator).waitFor({ state: 'visible', timeout: configFile.globalWait })
-            let value = await this.page.locator(locator).inputValue()
+            let value = await this.page.locator(locator).innerText()
             expect(value).toContain(text)
             console.log(`Value of '${locator}' does contains ${text}`);
         } catch (error) {
