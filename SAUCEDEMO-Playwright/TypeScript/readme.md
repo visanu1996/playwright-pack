@@ -4,9 +4,9 @@ This folder contains Playwright tests using **TypeScript**, targeting the [Sauce
 
 ## Project Structure
 
-- **src/common/**: Common utilities and helper functions
-- **src/pages/**: Page objects for Saucedemo
-- **tests/**: Test scripts
+- **resources/common/**: Common utilities and helper functions
+- **resources/PageObjects/SAUCEDEMO/**: Page objects for Saucedemo
+- **tests/saucedemo**: Test scripts
 
 ## Getting Started
 
