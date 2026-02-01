@@ -23,9 +23,6 @@ const common_locators = {
     toast: "xpath=//h3[@data-test='error']"
 
 }
-// create key type to access key using params.
-type MenuKeys = keyof typeof common_locators.menuBar;
-type CommonLocatorPage = keyof typeof common_locators.pages;
 
 export class CommonSauceDemo {
     constructor(public readonly common: CommonKeywords) {
@@ -60,7 +57,7 @@ export class CommonSauceDemo {
      * @param menuName - The menu key (e.g., "about", "logout")
      * @returns none.
      */
-    async menuSelect(menuName: MenuKeys) {
+    async menuSelect(menuName: keyof typeof common_locators.menuBar) {
         if (menuName in common_locators.menuBar) {
             await this.common.page.locator(common_locators.burger).click()
             await this.common.page.locator(common_locators.menuBar[menuName]).waitFor({ 'state': 'visible' })
@@ -75,7 +72,7 @@ export class CommonSauceDemo {
         }
     }
 
-    async gotoPage(pageName: CommonLocatorPage, byLink: boolean = false) {
+    async gotoPage(pageName: keyof typeof common_locators.pages, byLink: boolean = false) {
         if (byLink) {
             await this.common.page.goto(common_locators.pages[pageName])
         } else {
