@@ -8,7 +8,7 @@ blob-report/
 playwright/.cache/
 playwright/.auth/
 test-results/
-SAUCEDEMO-Playwright/TypeScript/config/user.ts
+# SAUCEDEMO-Playwright/TypeScript/config/testdata.ts      # for test no need to ignore secret or config.
 
 # Playwright - Robot (Browser Lib)
 
