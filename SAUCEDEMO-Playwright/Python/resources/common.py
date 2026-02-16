@@ -16,7 +16,6 @@ class CommonKeywords:
         self.browser = Browser
         self.context = BrowserContext
         self.playwright = Playwright
-
         # project_root = os.path.dirname(os.path.dirname(__file__))
         # config_file = os.path.join(project_root, "config","config.yml")
         # self.global_config = read_file(config_file)
