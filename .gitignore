@@ -12,3 +12,6 @@ test-results/
 
 # Playwright - Robot (Browser Lib)
 
+# Python ignore
+__pycache__/
+.pytest_cache/
