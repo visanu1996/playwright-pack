@@ -6,19 +6,24 @@ from playwright.sync_api import (
     Playwright,
     sync_playwright,
 )
+from utils.file_loader import read_file
+import os
+
+
+project_root = os.path.dirname(os.path.dirname(__file__))
+config_file = os.path.join(project_root, "config","config.yml")
+global_config = read_file(config_file)
 
 
 class CommonKeywords:
 
     def __init__(self):
         self.pages = {}
-        self.page = Page
-        self.browser = Browser
-        self.context = BrowserContext
-        self.playwright = Playwright
-        # project_root = os.path.dirname(os.path.dirname(__file__))
-        # config_file = os.path.join(project_root, "config","config.yml")
-        # self.global_config = read_file(config_file)
+        self.page: Page = None
+        self.browser: Browser = None
+        self.context: BrowserContext = None
+        self.playwright: Playwright = None
+    
 
     def create_web_driver(self):
         """
@@ -90,29 +95,32 @@ class CommonKeywords:
         """
         if page_name in self.pages:
             self.page = self.pages[page_name]
+            self.page.bring_to_front()
         else:
             print(f"Page {page_name} not found in stored pages.")
 
-    def verify_page_arrive(self, locator: str):
-        expect(self.page.locator(locator)).to_be_visible()
+    def verify_page_arrive(self, locator: str, timeout = global_config.get('GLOBAL_WAIT',10000)):
+        expect(self.page.locator(locator)).to_be_visible(timeout=timeout)
 
-    def click_element(self, locator: str, timeout=10):
+    def click_element(self, locator: str, timeout=global_config.get('GLOBAL_WAIT',10000)):
         self.page.locator(locator).click(timeout=timeout, force=True)
 
     def fill_text(self, locator: str, text: str, secret: bool = False):
         self.page.locator(locator).fill(text)
         if not secret:
             print(f"filled locator {locator} with : {text}")
-
-    def verify_contains_value(self, locator: str, text: str, timeout = 10):
+        else:
+            print(f"filled secret to locator {locator}")
+            
+    def verify_contains_value(self, locator: str, text: str, timeout = global_config.get('GLOBAL_WAIT',10000)):
         self.page.locator(locator).wait_for(state="visible", timeout=timeout)
         expect(self.page.locator(locator)).to_contain_text(text)
 
-    def get_element_value(self, locator: str, timeout = 10):
+    def get_element_value(self, locator: str, timeout = global_config.get('GLOBAL_WAIT',10000)):
         self.page.locator(locator).wait_for(state="visible", timeout=timeout)
         self.page.locator(locator).input_value()
         
-    def get_element_text(self, locator: str, timeout = 10):
+    def get_element_text(self, locator: str, timeout = global_config.get('GLOBAL_WAIT',10000)):
         self.page.locator(locator).wait_for(state="visible", timeout=timeout)
         text = self.page.locator(locator).text_content()
             
