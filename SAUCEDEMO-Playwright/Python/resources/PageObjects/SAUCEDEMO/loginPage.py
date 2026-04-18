@@ -10,6 +10,7 @@ LOGIN_PAGE_LOCATOR = {
 
 
 def login_sauce_demo(common:CommonKeywords,user_name: str, password: str):
-    common.fill_text(LOGIN_PAGE_LOCATOR["inputPass"], user_name)
+    common.fill_text(LOGIN_PAGE_LOCATOR["inputName"], user_name)
     common.fill_text(LOGIN_PAGE_LOCATOR["inputPass"], password, True)
     common.click_element(LOGIN_PAGE_LOCATOR["submitBtn"])
+    
