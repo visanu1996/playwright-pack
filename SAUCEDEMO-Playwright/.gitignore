@@ -11,7 +11,4 @@ test-results/
 # SAUCEDEMO-Playwright/TypeScript/config/testdata.ts      # for test no need to ignore secret or config.
 
 # Playwright - Robot (Browser Lib)
-
-# Python ignore
-__pycache__/
-.pytest_cache/
+*.pyc
