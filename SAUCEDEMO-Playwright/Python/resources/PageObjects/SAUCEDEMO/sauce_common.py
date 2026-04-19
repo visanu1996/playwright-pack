@@ -1,5 +1,6 @@
 from resources.common import CommonKeywords
-from .loginPage import login_sauce_demo
+from .loginPage import login_sauce_demo, toast_check
+from .productPage import add_or_remove_products, verify_product_page, verify_cart_badge
 from playwright.sync_api import  expect
 
 COMMON_LOCATORS = {
@@ -26,15 +27,19 @@ class CommonSauceDemo:
         self.common: CommonKeywords = common
         
     def run_login_test(self, user_name, password, check_toast = False, toast_text: any = None):
-        login_sauce_demo(self.common,user_name,password)
+        login_sauce_demo(self.common, user_name,password)
         if  check_toast :
-            self.toast_check(toast_text)
+            toast_check(self.common, toast_text)
             print("Toast error match!")
-            
-    def toast_check(self,error_text):
-        locator = self.common.page.locator(COMMON_LOCATORS["toast"])
-        if locator.is_visible() :
-            expect(locator).to_contain_text(error_text)
-        else:
-            raise Exception ("No Toast were found on this page.")
+
+    def run_add_products_test(self, products:list):
+        verify_product_page(self.common)
+        add_or_remove_products(self.common, products)
+
+    def menu_select(self, menu_name):
+        self.common.page.locator(COMMON_LOCATORS["burger"]).click()
+        self.common.page.locator(COMMON_LOCATORS["menuBar"][menu_name]).wait_for(state="visible")
+        self.common.page.locator(COMMON_LOCATORS["menuBar"][menu_name]).click()
+        print(menu_name)
+        if menu_name == 'resetAppState' : verify_cart_badge(self.common, is_empty=True)
         

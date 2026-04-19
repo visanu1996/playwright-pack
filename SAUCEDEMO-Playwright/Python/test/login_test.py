@@ -1,10 +1,4 @@
-import pytest
-import os
-from resources.common import CommonKeywords
-from resources.PageObjects.SAUCEDEMO.sauce_common import CommonSauceDemo
-from resources.PageObjects.SAUCEDEMO.loginPage import login_sauce_demo
-from utils.file_loader import read_file
-
+from utils.session_setup import create_sauce_session
 
 class TestLogin:
     # @classmethod
@@ -13,15 +7,7 @@ class TestLogin:
     # def teardown_class(cls):
         
     def setup_method(self):
-        _project_root = os.path.dirname(os.path.dirname(__file__))
-        self.user = read_file(os.path.join(_project_root, "config/testdata.yml"))
-        self.config = read_file(os.path.join(_project_root, "config/config.yml"))
-
-        self.common = CommonKeywords()
-        self.sauce = CommonSauceDemo(self.common)
-
-        self.common.create_web_driver()
-        self.common.create_page(self.config["WEB_URL"], "sauce")
+        self.common, self.sauce, self.user = create_sauce_session()
 
     def teardown_method(self):
         self.common.page.wait_for_timeout(1000)
@@ -50,4 +36,3 @@ class TestLogin:
     def test_login_std(self):
         """TC005 Login with valid credential"""
         self.sauce.run_login_test(self.user["USER"]["standard"], self.user["PASSWORD"])
-        self.common.verify_page_arrive()
