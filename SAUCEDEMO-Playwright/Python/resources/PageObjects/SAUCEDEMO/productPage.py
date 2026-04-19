@@ -12,6 +12,7 @@ PRODUCT_PAGE_LOCATORS = {
         "addBtn": "//button",
     },
     "filter": "xpath=//select[@class='product_sort_container']",
+    "cart_badge" : "xpath=//span[@class='shopping_cart_badge']"
 }
 
 products_detail = {}
@@ -77,7 +78,9 @@ def get_products_detail(common: CommonKeywords, products: list):
             }
         except:
             print(f"\nThere is no product named : {product}")
-
+    
+    print(products_detail)
+    return products_detail
 
 def change_filter_by_value(common: CommonKeywords, method="az"):
     """Change products filter by using value from filter options.
@@ -95,4 +98,14 @@ def change_filter_by_value(common: CommonKeywords, method="az"):
     
     filter_locator = common.page.locator(PRODUCT_PAGE_LOCATORS["filter"])
     filter_locator.select_option(value=method)
-    expect(filter_locator).to_have_value(method)
+    expect(filter_locator,f'locator suppose to have value of {method}').to_have_value(method)
+    
+def verify_product_page(common: CommonKeywords):
+    common.verify_page_arrive(PRODUCT_PAGE_LOCATORS["productHeader"])
+
+def verify_cart_badge(common: CommonKeywords,is_empty: False):
+    if is_empty : 
+        expect(common.page.locator(PRODUCT_PAGE_LOCATORS["cart_badge"]),"cart badge is still visible, it shouldn't be").not_to_be_visible()
+        expect(common.page.locator("xpath=(//div[@class='inventory_item' and .//div[@class='inventory_item_name ']]//button[text()='Remove'])[1]"),"All Item's should be remove").not_to_be_visible()
+    else :
+        expect(common.page.locator(PRODUCT_PAGE_LOCATORS["cart_badge"]),"cart badge is not visible, it should be").to_be_visible()
