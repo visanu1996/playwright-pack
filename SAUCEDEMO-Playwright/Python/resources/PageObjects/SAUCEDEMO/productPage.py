@@ -19,7 +19,7 @@ products_detail = {}
 
 
 def add_or_remove_products(common: CommonKeywords, products: list):
-    """Add or remove specific products.
+    """Add or remove specific products in product page.
 
     Will remove if items is already in the cart.
     

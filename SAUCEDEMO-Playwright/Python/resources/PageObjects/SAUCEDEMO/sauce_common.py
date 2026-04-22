@@ -12,11 +12,13 @@ COMMON_LOCATORS = {
         "resetAppState": "xpath=//a[text()='Reset App State']",
         "closeMenu": "xpath=//button[text()='Close Menu']"
     },
-    "pages": {
+    "pages_locator": {
         "cart": "xpath=//a[@class='shopping_cart_link']",
+    },
+    "pages_url":{
         "cartLink": "https://www.saucedemo.com/cart.html",
         "productLink": "https://www.saucedemo.com/inventory.html",
-        "checkout": "https://www.saucedemo.com/checkout-step-one.html",
+        "checkoutLink": "https://www.saucedemo.com/checkout-step-one.html",       
     },
     "toast": "xpath=//h3[@data-test='error']"
 
@@ -42,4 +44,18 @@ class CommonSauceDemo:
         self.common.page.locator(COMMON_LOCATORS["menuBar"][menu_name]).click()
         print(menu_name)
         if menu_name == 'resetAppState' : verify_cart_badge(self.common, is_empty=True)
-        
+    
+    def goto_page(self, page_name):
+        """ Goto selected page by locator or link based on page_name.
+
+            Currently there is only cart available as locator not link.
+        Args:
+            page_name (string): a page to select ['cart', 'cartLink', 'productLink', 'checkoutLink']
+        """
+        try:
+            if "link" in page_name.casefold():
+                self.common.page.goto(COMMON_LOCATORS["pages_url"][page_name])
+            else :
+                self.common.page.locator(COMMON_LOCATORS["pages_locator"][page_name]).click()        
+        except :
+            ValueError(f"There is no page name : {page_name}")
