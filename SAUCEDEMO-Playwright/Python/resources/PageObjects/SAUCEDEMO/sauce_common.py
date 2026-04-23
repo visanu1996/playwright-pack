@@ -1,6 +1,7 @@
 from resources.common import CommonKeywords
 from .loginPage import login_sauce_demo, toast_check
 from .productPage import add_or_remove_products, verify_product_page, verify_cart_badge
+from .checkout_page import fill_information
 from playwright.sync_api import  expect
 
 COMMON_LOCATORS = {
@@ -33,7 +34,14 @@ class CommonSauceDemo:
         if  check_toast :
             toast_check(self.common, toast_text)
             print("Toast error match!")
-
+            
+            
+    def fill_informatio_test(self, first_name, last_name, zip_code, check_toast = False, toast_text = None):
+        fill_information(self.common, first_name, last_name, zip_code)
+        if check_toast : 
+            toast_check(self.common, toast_text) 
+            print("Toast error match!")
+        
     def run_add_products_test(self, products:list):
         verify_product_page(self.common)
         add_or_remove_products(self.common, products)
