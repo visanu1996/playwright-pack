@@ -1,8 +1,8 @@
 from resources.common import CommonKeywords
 from .loginPage import login_sauce_demo, toast_check
 from .productPage import add_or_remove_products, verify_product_page, verify_cart_badge
-from .checkout_page import fill_information
-from playwright.sync_api import  expect
+from .cart_page import verify_items_in_cart, commit_purchase
+from .checkout_page import fill_information, verify_complete_shipping
 
 COMMON_LOCATORS = {
     "burger": "xpath=//button[@id='react-burger-menu-btn']",
@@ -28,7 +28,17 @@ COMMON_LOCATORS = {
 class CommonSauceDemo:
     def __init__(self, common):
         self.common: CommonKeywords = common
-        
+    
+    def run_full_test(self, user_name, password, products, first_name, last_name, zip_code):
+        '''Run a full test.'''
+        login_sauce_demo(self.common, user_name, password)
+        add_or_remove_products(self.common, products)
+        self.goto_page("cart")
+        verify_items_in_cart(self.common, products)
+        commit_purchase(self.common)
+        fill_information(self.common,first_name, last_name, zip_code)
+        verify_complete_shipping(self.common, "Thank you for your order!")
+    
     def run_login_test(self, user_name, password, check_toast = False, toast_text: any = None):
         login_sauce_demo(self.common, user_name,password)
         if  check_toast :
