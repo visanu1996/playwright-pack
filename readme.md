@@ -2,7 +2,7 @@
 
 A collection of Playwright test examples using:
 
-- Robot Framework (Browser library)
+- ~~Robot Framework (Browser library)~~
 - Python
 - TypeScript
 
