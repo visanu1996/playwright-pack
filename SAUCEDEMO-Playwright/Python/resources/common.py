@@ -61,8 +61,8 @@ class CommonKeywords:
         page = self.context.new_page()
         page.goto(web_string, timeout=30000, wait_until="commit")
 
-        self.pages[page_name] = self.page
-        self.page = page  # not to confuse self.page and page in this function.
+        self.page = page
+        self.pages[page_name] = page
 
     def get_pages(self):
         """
@@ -123,4 +123,3 @@ class CommonKeywords:
     def get_element_text(self, locator: str, timeout = global_config.get('GLOBAL_WAIT',10000)):
         self.page.locator(locator).wait_for(state="visible", timeout=timeout)
         text = self.page.locator(locator).text_content()
-            
