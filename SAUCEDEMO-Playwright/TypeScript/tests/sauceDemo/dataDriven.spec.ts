@@ -1,6 +1,6 @@
 import { test } from '@playwright/test'
 import * as configFile from '../../config/config'
-import * as secret from '../../config/secret'
+import * as testdata from '../../config/testdata'
 import * as commonPage from '../../resources//common'
 import * as sauceDemo from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
 
@@ -23,6 +23,6 @@ test.describe.serial('SauceDemo Data Driven', () => {
     });
 
     test('Full Run', async () => {
-        await sauce.runFullTest(secret.username.standard, secret.password, ['Backpack', 'Bike Light'], 'Berk', 'Rising', '10210')
+        await sauce.runFullTest(testdata.username.standard, testdata.password, ['Backpack', 'Bike Light'], 'Berk', 'Rising', '10210')
     });
 })
