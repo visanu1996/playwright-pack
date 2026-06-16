@@ -4,18 +4,28 @@ from utils.driver_factory import WebDriverManagement
 class BasePage : 
     def __init__(self, wd: WebDriverManagement):
         self.wd = wd
-        self.config  = wd.config
-        self.test_data = wd.test_data
         
     @property
     def page(self):
         if self.wd.page is None:
             raise Exception("No active browser page!")
         return self.wd.page
-        
+    
+    @property
+    def expect(self):
+        return self.wd.expect
+    
+    @property
+    def config(self):
+        return self.wd.config
+    
+    @property
+    def test_data(self):
+        return self.wd.test_data
+    
     def verify_page_arrive(self,locator:str , timeout=None):
         t = self._get_timeout(timeout)
-        self.wd.expect(self.page.locator(locator)).to_be_visible(timeout=t)
+        self.expect(self.page.locator(locator)).to_be_visible(timeout=t)
         
     def click_element(self, locator:str, timeout=None):
         self.page.locator(locator).click(timeout=timeout, force=True)
@@ -32,7 +42,7 @@ class BasePage :
     def verify_contains_value(self, locator: str, text: str, timeout=None):
         t = self._get_timeout(timeout)
         self.page.locator(locator).wait_for(state="visible", timeout=t)
-        self.wd.expect(self.page.locator(locator)).to_contain_text(text)
+        self.expect(self.page.locator(locator)).to_contain_text(text)
 
     def get_element_value(self, locator: str, timeout=None):
         t = self._get_timeout(timeout)
