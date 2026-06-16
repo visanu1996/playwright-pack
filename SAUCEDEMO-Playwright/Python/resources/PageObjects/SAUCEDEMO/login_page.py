@@ -1,6 +1,6 @@
-from resources.base_page import BasePage
+from resources.PageObjects.SAUCEDEMO.sauce_common import SauceDemoBase
 
-class LoginPage(BasePage):
+class LoginPage(SauceDemoBase):
     # locators
     LOGIN_PAGE_LOCATOR = {
         "loginLogo": "xpath=//div[@class='login_logo']",
@@ -20,7 +20,7 @@ class LoginPage(BasePage):
     def verify_toast(self, error_text):
         toast = self.page.locator(self.LOGIN_PAGE_LOCATOR['toast'])
         if toast.is_visible() :
-            self.wd.expect(toast).to_contain_text(error_text)
+            self.expect(toast).to_contain_text(error_text)
         else:
             raise Exception('No toast found on this page.')     # for checking that there is toast or not in test.
         
