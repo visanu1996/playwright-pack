@@ -38,9 +38,19 @@ class WebDriverManagement:
             self.context.close()
             self.browser.close()
             self.Playwright.stop()
+        elif self.browser:
+            self.browser.close()
+            self.Playwright.stop()
         else: 
             print("No Browser is opened.")
-            
+
+    def close_context(self):
+        if self.context:
+            self.context.close()
+        else:
+            print("No Context is opened.")
+        
+        
     def _ensure_browser_is_running(self):
         if not self.browser:
             self.start_browser()
