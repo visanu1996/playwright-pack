@@ -1,13 +1,13 @@
-from resources.PageObjects.SAUCEDEMO.product_page import ProductPage
-from resources.PageObjects.SAUCEDEMO.login_page import LoginPage
+from resources.PageObjects.SAUCEDEMO.sauce_common import SauceCommonFlows
 from utils.session_manage import create_test_session
 
 class TestProduct:
     
     def setup_method(self):
         self.wd, self.webs = create_test_session()
-        self.product_page = ProductPage(self.wd)
-        self.login_class = LoginPage(self.wd)
+        self.sauce_common = SauceCommonFlows(self.wd)
+        self.product_page = self.sauce_common.product_page
+        self.login_class = self.sauce_common.login_page
         self.webs.web_setup()
         self.login_class.login_with_std_cred()
         

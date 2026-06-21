@@ -1,15 +1,15 @@
-from resources.PageObjects.SAUCEDEMO.login_page import LoginPage
-from resources.PageObjects.SAUCEDEMO.product_page import ProductPage
-from resources.PageObjects.SAUCEDEMO.cart_page import CartPage
+from resources.PageObjects.SAUCEDEMO.sauce_common import SauceCommonFlows
 from utils.session_manage import create_test_session
 
 class TestCart:
     
     def setup_method(self):
         self.wd, self.webs = create_test_session()
-        self.login_page = LoginPage(self.wd)
-        self.product_page = ProductPage(self.wd)
-        self.cart_page = CartPage(self.wd)
+        self.sauce_common = SauceCommonFlows(self.wd)
+        self.login_page = self.sauce_common.login_page
+        self.product_page = self.sauce_common.product_page
+        self.cart_page = self.sauce_common.cart_page
+        
         self.webs.web_setup()
         self.login_page.login_with_std_cred()
         self.product_page.add_or_remove_products(['Backpack', 'Bike Light', 'T-Shirt'])

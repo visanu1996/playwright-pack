@@ -1,10 +1,11 @@
-from resources.PageObjects.SAUCEDEMO.login_page import LoginPage
+from resources.PageObjects.SAUCEDEMO.sauce_common import SauceCommonFlows
 from utils.session_manage import create_test_session
 
 class TestLogin:
     def setup_method(self):
         self.wd, self.webs = create_test_session()
-        self.login_page = LoginPage(self.wd)
+        self.sauce_common = SauceCommonFlows(self.wd)
+        self.login_page = self.sauce_common.login_page
         self.webs.web_setup()
         
     def teardown_method(self):
