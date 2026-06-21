@@ -57,3 +57,33 @@ class SauceDemoBase(BasePage):
             self.expect(self.page.locator("xpath=(//div[@class='inventory_item' and .//div[@class='inventory_item_name ']]//button[text()='Remove'])[1]"),"All Item's should be remove").not_to_be_visible()
         else :
             self.expect(self.page.locator(self.PRODUCT_PAGE_LOCATORS["cart_badge"]),"cart badge is not visible, it should be").to_be_visible()
+            
+            
+class SauceCommonFlows:
+    """Centralized flows that use multiple page objects."""
+    
+    def __init__(self, wd):
+        # Import inside __init__ because, 
+        # it will crash from POM classes calling for 
+        # SauceDemoBase even that it still not initialze.
+        from resources.PageObjects.SAUCEDEMO.login_page import LoginPage
+        from resources.PageObjects.SAUCEDEMO.product_page import ProductPage
+        from resources.PageObjects.SAUCEDEMO.cart_page import CartPage
+        from resources.PageObjects.SAUCEDEMO.checkout_page import CheckoutPage
+
+        self.login_page = LoginPage(wd)
+        self.product_page = ProductPage(wd)
+        self.cart_page = CartPage(wd)
+        self.checkout_page = CheckoutPage(wd)
+    
+    def complete_purchase(self, username, password, products:list[str], checkout_data:list[str]):
+        """Full purchase flow using multiple pages.
+
+            checkout_data = first_name, last_name, zip_code.
+        """
+        self.login_page.login(username, password)
+        self.product_page.add_or_remove_products(products)
+        self.product_page.goto_page("cart")
+        self.cart_page.verify_items_in_cart(products)
+        self.cart_page.commit_purchase()
+        self.checkout_page.fill_information(*checkout_data)
