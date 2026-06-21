@@ -1,3 +1,9 @@
 WEB_URL : "https://www.saucedemo.com/"
-GLOBAL_WAIT : 10000
+YT: "https://www.youtube.com/"
+GOOGLE: "https://www.google.com/"
+
+GLOBAL_WAIT : 5000
+NAV_WAIT : 10000
 MAX_RETRIES : 3
+HEADLESS : False
+INTERACT_DELAY : 1000

@@ -1,38 +1,32 @@
-from utils.session_setup import create_sauce_session
+from resources.PageObjects.SAUCEDEMO.sauce_common import SauceCommonFlows
+from utils.session_manage import create_test_session
 
 class TestLogin:
-    # @classmethod
-    # def setup_class(cls):
-    # @classmethod
-    # def teardown_class(cls):
-        
     def setup_method(self):
-        self.common, self.sauce, self.user = create_sauce_session()
-
+        self.wd, self.webs = create_test_session()
+        self.sauce_common = SauceCommonFlows(self.wd)
+        self.login_page = self.sauce_common.login_page
+        self.webs.web_setup()
+        
     def teardown_method(self):
-        self.common.page.wait_for_timeout(1000)
-        self.common.close_web_driver()
-
-    def test_login_lck(self):
-        """TC001 Login with lock credential"""
-        self.sauce.run_login_test(self.user["USER"]["locked"], self.user["PASSWORD"], True, 'has been locked out.')
-
-    def test_login_invalid_cred(self):
-        """TC002 Login with wrong cred"""
-        self.sauce.run_login_test("Hello", "World", True, "not match")
-
-    def test_login_without_password(self):
-        """C003 Login without password"""
-        self.sauce.run_login_test(
-            self.user["USER"]["standard"], "", True, "Password is required"
-        )
-
-    def test_login_without_username(self):
-        """TC004 Login without username"""
-        self.sauce.run_login_test(
-            "", self.user["PASSWORD"], True, "Username is required"
-        )
-
-    def test_login_std(self):
-        """TC005 Login with valid credential"""
-        self.sauce.run_login_test(self.user["USER"]["standard"], self.user["PASSWORD"])
+        self.wd.page.wait_for_timeout(1000)
+        self.wd.close_browser()
+        
+    def test_login1(self):
+        self.login_page.login("","Hi")
+        self.login_page.verify_toast("Username is required")
+        
+    def test_login2(self):
+        self.login_page.login("Test","")
+        self.login_page.verify_toast("Password is required")
+    
+    def test_login3(self):
+        self.login_page.login_with_std_cred()
+        
+    def test_switch_yt(self):
+        self.wd.switch_to_page('YT')
+        self.wd.page.wait_for_timeout(5000)
+        
+    def test_switch_google(self):
+        self.wd.switch_to_page('GOOGLE')
+        self.wd.page.wait_for_timeout(5000)

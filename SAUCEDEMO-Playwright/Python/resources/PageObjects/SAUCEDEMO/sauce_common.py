@@ -1,67 +1,34 @@
-from resources.common import CommonKeywords
-from .loginPage import login_sauce_demo, toast_check
-from .productPage import add_or_remove_products, verify_product_page, verify_cart_badge
-from .cart_page import verify_items_in_cart, commit_purchase
-from .checkout_page import fill_information, verify_complete_shipping
+from resources.base_page import BasePage
 
-COMMON_LOCATORS = {
-    "burger": "xpath=//button[@id='react-burger-menu-btn']",
-    "menuBar": {
-        "allItems": "xpath=//a[text()='All Items']",
-        "about": "xpath=//a[text()='About']",
-        "logout": "xpath=//a[text()='Logout']",
-        "resetAppState": "xpath=//a[text()='Reset App State']",
-        "closeMenu": "xpath=//button[text()='Close Menu']"
-    },
-    "pages_locator": {
-        "cart": "xpath=//a[@class='shopping_cart_link']",
-    },
-    "pages_url":{
-        "cartLink": "https://www.saucedemo.com/cart.html",
-        "productLink": "https://www.saucedemo.com/inventory.html",
-        "checkoutLink": "https://www.saucedemo.com/checkout-step-one.html",       
-    },
-    "toast": "xpath=//h3[@data-test='error']"
+class SauceDemoBase(BasePage):
 
-}
+    COMMON_LOCATORS = {
+        "burger": "xpath=//button[@id='react-burger-menu-btn']",
+        "menuBar": {
+            "allItems": "xpath=//a[text()='All Items']",
+            "about": "xpath=//a[text()='About']",
+            "logout": "xpath=//a[text()='Logout']",
+            "resetAppState": "xpath=//a[text()='Reset App State']",
+            "closeMenu": "xpath=//button[text()='Close Menu']"
+        },
+        "pages_locator": {
+            "cart": "xpath=//a[@class='shopping_cart_link']",
+        },
+        "pages_url":{
+            "cartLink": "https://www.saucedemo.com/cart.html",
+            "productLink": "https://www.saucedemo.com/inventory.html",
+            "checkoutLink": "https://www.saucedemo.com/checkout-step-one.html",       
+        },
+        "toast": "xpath=//h3[@data-test='error']"
 
-class CommonSauceDemo:
-    def __init__(self, common):
-        self.common: CommonKeywords = common
-    
-    def run_full_test(self, user_name, password, products, first_name, last_name, zip_code):
-        '''Run a full test.'''
-        login_sauce_demo(self.common, user_name, password)
-        add_or_remove_products(self.common, products)
-        self.goto_page("cart")
-        verify_items_in_cart(self.common, products)
-        commit_purchase(self.common)
-        fill_information(self.common,first_name, last_name, zip_code)
-        verify_complete_shipping(self.common, "Thank you for your order!")
-    
-    def run_login_test(self, user_name, password, check_toast = False, toast_text: any = None):
-        login_sauce_demo(self.common, user_name,password)
-        if  check_toast :
-            toast_check(self.common, toast_text)
-            print("Toast error match!")
+    }   
             
-            
-    def fill_informatio_test(self, first_name, last_name, zip_code, check_toast = False, toast_text = None):
-        fill_information(self.common, first_name, last_name, zip_code)
-        if check_toast : 
-            toast_check(self.common, toast_text) 
-            print("Toast error match!")
-        
-    def run_add_products_test(self, products:list):
-        verify_product_page(self.common)
-        add_or_remove_products(self.common, products)
-
     def menu_select(self, menu_name):
-        self.common.page.locator(COMMON_LOCATORS["burger"]).click()
-        self.common.page.locator(COMMON_LOCATORS["menuBar"][menu_name]).wait_for(state="visible")
-        self.common.page.locator(COMMON_LOCATORS["menuBar"][menu_name]).click()
+        self.page.locator(self.COMMON_LOCATORS["burger"]).click()
+        self.page.locator(self.COMMON_LOCATORS["menuBar"][menu_name]).wait_for(state="visible")
+        self.page.locator(self.COMMON_LOCATORS["menuBar"][menu_name]).click()
         print(menu_name)
-        if menu_name == 'resetAppState' : verify_cart_badge(self.common, is_empty=True)
+        if menu_name == 'resetAppState' : self.verify_cart_badge(is_empty=True)
     
     def goto_page(self, page_name):
         """ Goto selected page by locator or link based on page_name.
@@ -72,8 +39,51 @@ class CommonSauceDemo:
         """
         try:
             if "link" in page_name.casefold():
-                self.common.page.goto(COMMON_LOCATORS["pages_url"][page_name])
+                self.page.goto(self.COMMON_LOCATORS["pages_url"][page_name])
             else :
-                self.common.page.locator(COMMON_LOCATORS["pages_locator"][page_name]).click()        
+                self.page.locator(self.COMMON_LOCATORS["pages_locator"][page_name]).click()        
         except :
             ValueError(f"There is no page name : {page_name}")
+            
+    def verify_cart_badge(self, is_empty: False):
+        """Verify the cart badge visibility state.
+
+        Args:
+            is_empty (bool): If True, verifies that cart badge and remove buttons are not visible.
+                           If False, verifies that cart badge is visible. Defaults to False.
+        """
+        if is_empty : 
+            self.expect(self.page.locator(self.PRODUCT_PAGE_LOCATORS["cart_badge"]),"cart badge is still visible, it shouldn't be").not_to_be_visible()
+            self.expect(self.page.locator("xpath=(//div[@class='inventory_item' and .//div[@class='inventory_item_name ']]//button[text()='Remove'])[1]"),"All Item's should be remove").not_to_be_visible()
+        else :
+            self.expect(self.page.locator(self.PRODUCT_PAGE_LOCATORS["cart_badge"]),"cart badge is not visible, it should be").to_be_visible()
+            
+            
+class SauceCommonFlows:
+    """Centralized flows that use multiple page objects."""
+    
+    def __init__(self, wd):
+        # Import inside __init__ because, 
+        # it will crash from POM classes calling for 
+        # SauceDemoBase even that it still not initialze.
+        from resources.PageObjects.SAUCEDEMO.login_page import LoginPage
+        from resources.PageObjects.SAUCEDEMO.product_page import ProductPage
+        from resources.PageObjects.SAUCEDEMO.cart_page import CartPage
+        from resources.PageObjects.SAUCEDEMO.checkout_page import CheckoutPage
+
+        self.login_page = LoginPage(wd)
+        self.product_page = ProductPage(wd)
+        self.cart_page = CartPage(wd)
+        self.checkout_page = CheckoutPage(wd)
+    
+    def complete_purchase(self, username, password, products:list[str], checkout_data:list[str]):
+        """Full purchase flow using multiple pages.
+
+            checkout_data = first_name, last_name, zip_code.
+        """
+        self.login_page.login(username, password)
+        self.product_page.add_or_remove_products(products)
+        self.product_page.goto_page("cart")
+        self.cart_page.verify_items_in_cart(products)
+        self.cart_page.commit_purchase()
+        self.checkout_page.fill_information(*checkout_data)
