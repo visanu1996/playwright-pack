@@ -1,5 +1,9 @@
 import { WebDriverManagement } from "./driverFactory";
 
+/** AppFactory 
+ * 
+ * A centralized place for setup webs testing and register it in pages to be select and use later.
+*/
 export class AppFactory {
   constructor(public wd: WebDriverManagement) {}
 
