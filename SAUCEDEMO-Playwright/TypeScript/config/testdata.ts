@@ -1,5 +1,5 @@
 // Normally you don't push secret to github !
-const user = {
+export const user = {
     "standard": "standard_user",
     "locked": "locked_out_user",
     "probmel": "problem_user",
@@ -8,4 +8,4 @@ const user = {
     "visual": "visual_user",
 }
 
-const password = "secret_sauce"
+export const password = "secret_sauce"
