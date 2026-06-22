@@ -1,4 +1,4 @@
-import { WebDriverManagement } from "../utils/driver_factory";
+import { WebDriverManagement } from "../utils/driverFactory";
 
 /**
  * BasePage
@@ -12,11 +12,6 @@ import { WebDriverManagement } from "../utils/driver_factory";
  * - args: [page: Page, browser: Browser, context: BrowserContext]
  */
 export class BasePage extends WebDriverManagement {
-  // to passes typed parameters from parent class.
-  constructor(...args: ConstructorParameters<typeof WebDriverManagement>) {
-    super(...args);
-  }
-
   async verifyPageArrive(locator: string, timeout: number | null = null) {
     let t = this.set_timeout(timeout);
     await this.expect(this.page.locator(locator)).toBeVisible({ timeout: t });

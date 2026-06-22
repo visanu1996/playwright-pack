@@ -13,11 +13,9 @@ export class WebDriverManagement {
   public config = configFile;
   public testData = testData;
   public expect = expect;
-  constructor(
-    public page: Page,
-    public browser: Browser,
-    public context: BrowserContext,
-  ) {}
+  public page!: Page;
+  public browser!: Browser;
+  public context!: BrowserContext;
 
   async startBrowser() {
     this.browser = await chromium.launch({
@@ -63,5 +61,4 @@ export class WebDriverManagement {
     } else
       console.error(`There is no such page name ${pageName} stored in pages.`);
   }
-
 }
