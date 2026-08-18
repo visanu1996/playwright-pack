@@ -1,23 +1,23 @@
 import { test } from '@playwright/test'
-import * as configFile from '../../config/config'
-import * as commonPage from '../../resources/common'
-import * as sourceDemo from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
-import * as productPage from '../../resources/PageObjects/SAUCEDEMO/productPage'
-import * as checkoutPage from '../../resources/PageObjects/SAUCEDEMO/checkoutPage'
+import { SDCommon } from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
+import { WebDriverManagement } from '../../utils/driverFactory'
+import { BasePage } from '../../resources/basePage'
 
-let common: commonPage.CommonKeywords
-let sauce: sourceDemo.CommonSauceDemo
+let wd: WebDriverManagement
+let basePage: BasePage
+let sauce: SDCommon
 
 test.describe.serial('QA-DEMO', () => {
     test.setTimeout(0);
     test.beforeAll(async () => {
-        common = new commonPage.CommonKeywords()
-        sauce = new sourceDemo.CommonSauceDemo(common)
-        await common.createWebDriver()
-        await common.createPage(configFile.webURL, 'sauce')
-        common.setPage('sauce')
-        await sauce.runLoginTest('standard_user', 'secret_sauce')
-        await common.verifyPageArrive(productPage.productPageLocators.productHeader)
+        wd = new WebDriverManagement()
+        basePage = new BasePage(wd)
+        sauce = new SDCommon(wd)
+
+        await wd.startBrowser()
+        await sauce.createPage(sauce.config.webURL, 'sauce')
+        await sauce.login.LoginSauce('standard_user', 'secret_sauce')
+        await sauce.verifyPageArrive(sauce.product.productPageLocators.productHeader)
 
         await sauce.runAddProductTest(['Backpack', 'Bike Light', 'T-Shirt'])
         await sauce.gotoPage("cart")
@@ -26,8 +26,8 @@ test.describe.serial('QA-DEMO', () => {
 
     });
     test.afterAll(async () => {
-        await common.page.waitForTimeout(5000)
-        await common.closeWebDriver()
+        await sauce.page.waitForTimeout(5000)
+        wd.closeBrowser()
     });
 
     test('TC001 Not adding information in checkout information page.', async () => {
@@ -37,13 +37,13 @@ test.describe.serial('QA-DEMO', () => {
         await sauce.runCheckoutTest("Visan", "Laster", "12345")
     });
     test('TC002 Check total price, items price compare to total price.', async () => {
-        await checkoutPage.SumTotalFromItems(common, 55.97)
+        await sauce.checkout.SumTotalFromItems(55.97)
     });
     test('TC003 Get Shipping Information', async () => {
-        await checkoutPage.GetShippingInformation(common)
+        await sauce.checkout.GetShippingInformation()
     });
 
     test('TC004 Verify complete message', async () => {
-        await checkoutPage.VerifyCompleteShipping(common, "Thank you for your order!")
+        await sauce.checkout.VerifyCompleteShipping("Thank you for your order!")
     });
 });

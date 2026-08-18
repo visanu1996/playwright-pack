@@ -1,26 +1,28 @@
 import { test } from '@playwright/test'
-import * as configFile from '../../config/config'
-import * as commonPage from '../../resources/common'
-import * as sauceDemo from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
-import * as productPage from '../../resources/PageObjects/SAUCEDEMO/productPage'
+import { SDCommon } from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
+import { WebDriverManagement } from '../../utils/driverFactory'
+import { BasePage } from '../../resources/basePage'
 
-let common: commonPage.CommonKeywords
-let sauce: sauceDemo.CommonSauceDemo
+let wd: WebDriverManagement
+let basePage: BasePage
+let sauce: SDCommon
 
 test.describe.serial('QA-DEMO', () => {
     test.setTimeout(0);
     test.beforeAll(async () => {
-        common = new commonPage.CommonKeywords()
-        sauce = new sauceDemo.CommonSauceDemo(common)
-        await common.createWebDriver()
-        await common.createPage(configFile.webURL, 'sauce')
-        common.setPage('sauce')
-        await sauce.runLoginTest('standard_user', 'secret_sauce')
-        await common.verifyPageArrive(productPage.productPageLocators.productHeader)
+        wd = new WebDriverManagement()
+        basePage = new BasePage(wd)
+        sauce = new SDCommon(wd)
+
+        await wd.startBrowser()
+        await sauce.createPage(sauce.config.webURL,'sauce')
+        await sauce.login.LoginSauce('standard_user', 'secret_sauce')
+        await sauce.verifyPageArrive(sauce.product.productPageLocators.productHeader)
     });
+
     test.afterAll(async () => {
-        await common.page.waitForTimeout(5000)
-        common.closeWebDriver()
+        await sauce.page.waitForTimeout(5000)
+        wd.closeBrowser()
     });
 
     test('TC001 Add valid products and check it from cart', async () => {
@@ -38,6 +40,6 @@ test.describe.serial('QA-DEMO', () => {
         await sauce.gotoPage("cartLink", true)
         await sauce.verifyItemsInCartTest(['Backpack', 'Bike Light'])
         await sauce.commitPurchaseTest()
-        await common.page.waitForTimeout(5000)
+        await sauce.page.waitForTimeout(5000)
     });
 })

@@ -47,18 +47,4 @@ export class WebDriverManagement {
       this.context = await this.browser.newContext({ viewport: null });
   }
 
-  async createPage(url: string, pageName: string) {
-    await this.ensureBrowserIsRunning();
-    this.page = await this.context.newPage();
-    this.page.goto(url, { waitUntil: "load" });
-    this.pages[pageName] = this.page;
-  }
-
-  async switchPage(pageName: string) {
-    if (pageName in this.pages) {
-      this.page = this.pages[pageName];
-      await this.page.bringToFront();
-    } else
-      console.error(`There is no such page name ${pageName} stored in pages.`);
-  }
 }

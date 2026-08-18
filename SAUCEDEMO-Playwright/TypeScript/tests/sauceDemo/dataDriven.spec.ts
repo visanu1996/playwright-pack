@@ -1,28 +1,29 @@
 import { test } from '@playwright/test'
-import * as configFile from '../../config/config'
-import * as testdata from '../../config/testdata'
-import * as commonPage from '../../resources//common'
-import * as sauceDemo from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
+import { WebDriverManagement } from '../../utils/driverFactory'
+import { BasePage } from '../../resources/basePage'
+import { SDCommon } from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
 
-let common: commonPage.CommonKeywords
-let sauce: sauceDemo.CommonSauceDemo
+let wd: WebDriverManagement
+let basePage: BasePage
+let sauce: SDCommon
 
 test.describe.serial('SauceDemo Data Driven', () => {
     test.setTimeout(0);
     test.beforeAll(async () => {
-        common = new commonPage.CommonKeywords()
-        sauce = new sauceDemo.CommonSauceDemo(common)
-        await common.createWebDriver()
-        await common.createPage(configFile.webURL, "sauce")
-        common.setPage('sauce')
+        wd = new WebDriverManagement()
+        basePage = new BasePage(wd)
+        sauce = new SDCommon(wd)
+
+        await wd.startBrowser()
+        await sauce.createPage(sauce.config.webURL, 'sauce')
     });
 
     test.afterAll(async () => {
-        await common.page.waitForTimeout(5000)
-        common.closeWebDriver()
+        await sauce.page.waitForTimeout(5000)
+        wd.closeBrowser()
     });
 
     test('Full Run', async () => {
-        await sauce.runFullTest(testdata.username.standard, testdata.password, ['Backpack', 'Bike Light'], 'Berk', 'Rising', '10210')
+        await sauce.runFullTest(sauce.testData.user.standard, sauce.testData.password, ['Backpack', 'Bike Light'], 'Berk', 'Rising', '10210')
     });
 })

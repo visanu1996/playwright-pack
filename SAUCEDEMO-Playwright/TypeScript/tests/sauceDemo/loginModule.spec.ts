@@ -1,27 +1,29 @@
 import { test } from '@playwright/test'
-import * as configFile from '../../config/config'
-import * as commonPage from '../../resources/common'
-import * as sourceDemo from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
+import { WebDriverManagement } from '../../utils/driverFactory'
+import { BasePage } from '../../resources/basePage'
+import { SDCommon } from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
 
-let common: commonPage.CommonKeywords
-let sauce: sourceDemo.CommonSauceDemo
+let wd: WebDriverManagement
+let basePage: BasePage
+let sauce: SDCommon
 
 test.describe.serial('QA-DEMO', () => {
     test.setTimeout(0);
     test.beforeAll(async () => {
-        common = new commonPage.CommonKeywords()
-        sauce = new sourceDemo.CommonSauceDemo(common)
-        await common.createWebDriver()
-        await common.createPage(configFile.webURL, 'sauce')
-        // let video = page.video()
+        wd = new WebDriverManagement()
+        basePage = new BasePage(wd)
+        sauce = new SDCommon(wd)
+
+        await wd.startBrowser()
+        await sauce.createPage(sauce.config.webURL, 'sauce')
+        // let video = sauce.page.video()
     });
     test.afterAll(async () => {
-        await common.page.waitForTimeout(5000)
-        common.closeWebDriver()
+        await sauce.page.waitForTimeout(5000)
+        wd.closeBrowser()
     });
 
     test('TC001 Login with lock credential', async () => {
-        common.setPage('sauce')
         await sauce.runLoginTest('locked_out_user', 'secret_sauce', true, 'locked out.')
     });
     test('TC002 Login with wrong cred', async () => {

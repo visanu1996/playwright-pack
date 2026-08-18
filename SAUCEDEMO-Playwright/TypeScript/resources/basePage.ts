@@ -1,4 +1,5 @@
 import { WebDriverManagement } from "../utils/driverFactory";
+import { Page } from "@playwright/test";
 
 /**
  * BasePage
@@ -11,7 +12,33 @@ import { WebDriverManagement } from "../utils/driverFactory";
  * - Use `this.<prop>` to access inherited instance properties.
  * - args: [page: Page, browser: Browser, context: BrowserContext]
  */
-export class BasePage extends WebDriverManagement {
+export class BasePage {
+  constructor(protected wd: WebDriverManagement) {}
+
+  get expect(): typeof import("@playwright/test").expect {
+    return this.wd.expect;
+  }
+
+  get page(): Page {
+    return this.wd.page;
+  }
+
+  set page(p: Page) {
+    this.wd.page = p;
+  }
+
+  get pages(): Record<string, Page> {
+    return this.wd.pages;
+  }
+
+  get config(): typeof import("../config/config") {
+    return this.wd.config;
+  }
+
+  get testData(): typeof import("../config/testdata") {
+    return this.wd.testData;
+  }
+
   async verifyPageArrive(locator: string, timeout: number | null = null) {
     let t = this.set_timeout(timeout);
     await this.expect(this.page.locator(locator)).toBeVisible({ timeout: t });
@@ -55,6 +82,31 @@ export class BasePage extends WebDriverManagement {
     return await this.page.locator(locator).textContent({ timeout: t });
   }
 
+  /**
+   * Return all created pages.
+   */
+  getPages(): string[] {
+    const pagesName = Object.keys(this.pages);
+    console.log(`all pages : ${pagesName}`);
+    return pagesName;
+  }
+
+  async createPage(url: string, pageName: string) {
+    await this.wd.ensureBrowserIsRunning();
+    this.page = await this.wd.context.newPage();
+    this.page.goto(url, { waitUntil: "load" });
+    this.pages[pageName] = this.page;
+  }
+
+  async switchPage(pageName: string) {
+    if (pageName in this.pages) {
+      this.page = this.pages[pageName];
+      await this.page.bringToFront();
+    } else
+      console.error(`There is no such page name ${pageName} stored in pages.`);
+  }
+
+  
   private set_timeout(timeout: number | null = null): number {
     return timeout == null ? this.config.globalWait : timeout;
   }

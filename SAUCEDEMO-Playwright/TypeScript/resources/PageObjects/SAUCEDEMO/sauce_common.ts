@@ -1,32 +1,44 @@
-import { expect } from '@playwright/test'
-import { CommonKeywords } from '../../common'
-import * as loginPage from './loginPage'
-import * as productPage from './productPage'
-import * as cartPage from './cartPage'
-import * as checkoutPage from './checkoutPage'
+import { BasePage } from "../../basePage"
+import { WebDriverManagement } from "../../../utils/driverFactory"
+import { SDLoginPage } from './loginPage'
+import { SDProductPage } from './productPage'
+import { SDCartPage } from './cartPage'
+import { SDCheckoutPage } from './checkoutPage'
 
-const common_locators = {
-    burger: "xpath=//button[@id='react-burger-menu-btn']",
-    menuBar: {
-        allItems: "xpath=//a[text()='All Items']",
-        about: "xpath=//a[text()='About']",
-        logout: "xpath=//a[text()='Logout']",
-        resetAppState: "xpath=//a[text()='Reset App State']",
-        closeMenu: "xpath=//button[text()='Close Menu']"
-    },
-    pages: {
-        cart: "xpath=//a[@class='shopping_cart_link']",
-        cartLink: "https://www.saucedemo.com/cart.html",
-        productLink: "https://www.saucedemo.com/inventory.html",
-        checkout: "https://www.saucedemo.com/checkout-step-one.html",
-    },
-    toast: "xpath=//h3[@data-test='error']"
 
-}
+export class SDCommon extends BasePage {
+    public login: SDLoginPage
+    public product: SDProductPage
+    public cart: SDCartPage
+    public checkout: SDCheckoutPage
 
-export class CommonSauceDemo {
-    constructor(public readonly common: CommonKeywords) {
+    constructor(wd: WebDriverManagement) {
+        super(wd)
+        this.login = new SDLoginPage(this.wd)
+        this.product = new SDProductPage(this.wd)
+        this.cart = new SDCartPage(this.wd)
+        this.checkout = new SDCheckoutPage(this.wd)
     }
+
+    common_locators = {
+        burger: "xpath=//button[@id='react-burger-menu-btn']",
+        menuBar: {
+            allItems: "xpath=//a[text()='All Items']",
+            about: "xpath=//a[text()='About']",
+            logout: "xpath=//a[text()='Logout']",
+            resetAppState: "xpath=//a[text()='Reset App State']",
+            closeMenu: "xpath=//button[text()='Close Menu']"
+        },
+        pages: {
+            cart: "xpath=//a[@class='shopping_cart_link']",
+            cartLink: "https://www.saucedemo.com/cart.html",
+            productLink: "https://www.saucedemo.com/inventory.html",
+            checkout: "https://www.saucedemo.com/checkout-step-one.html",
+        },
+        toast: "xpath=//h3[@data-test='error']"
+
+    }
+
     /**
      * Run full test for sauceDemo with login, adding items, go to cart, confirm purchases.
      * Use in sauce common for centralize reasons.
@@ -36,18 +48,18 @@ export class CommonSauceDemo {
      */
     async runFullTest(userName: string, pass: string, products: string[], fName : string, lName : string, zipcode: string ) {
         // Step 1 : Login
-        await loginPage.LoginSauce(this.common, userName, pass)
+        await this.login.LoginSauce(userName, pass)
         // Step 2 : added items and get products detail.
-        await this.common.verifyPageArrive(productPage.productPageLocators.productHeader)
-        await productPage.addOrRemoveProducts(this.common,products)
+        await this.verifyPageArrive(this.product.productPageLocators.productHeader)
+        await this.product.addOrRemoveProducts(products)
         await this.gotoPage("cart")
         // Step 3 : Verify Items in cart.
-        await cartPage.verifyItemsInCart(this.common, products)
-        await cartPage.commitPurchase(this.common)
+        await this.cart.verifyItemInCart(products)
+        await this.cart.commitPurchase()
         // Step 4 : Confirm Shipping.
-        await checkoutPage.FillInformation(this.common, fName, lName, zipcode)
-        await checkoutPage.GetShippingInformation(this.common)
-        await checkoutPage.VerifyCompleteShipping(this.common,"Thank you for your order!")  // Don't need to check fail case anymore.
+        await this.checkout.FillInformation(fName, lName, zipcode)
+        await this.checkout.GetShippingInformation()
+        await this.checkout.VerifyCompleteShipping("Thank you for your order!")  // Don't need to check fail case anymore.
         // Step 5 : Log out.
         await this.menuSelect("logout")
     }
@@ -57,14 +69,14 @@ export class CommonSauceDemo {
      * @param menuName - The menu key (e.g., "about", "logout")
      * @returns none.
      */
-    async menuSelect(menuName: keyof typeof common_locators.menuBar) {
-        if (menuName in common_locators.menuBar) {
-            await this.common.page.locator(common_locators.burger).click()
-            await this.common.page.locator(common_locators.menuBar[menuName]).waitFor({ 'state': 'visible' })
-            await this.common.page.locator(common_locators.menuBar[menuName]).click({ force: true })
-            
-            let closeMenuBtn = this.common.page.locator(common_locators.menuBar['closeMenu'])
-            if (await closeMenuBtn.isVisible()) closeMenuBtn.click() 
+    async menuSelect(menuName: keyof typeof this.common_locators.menuBar) {
+        if (menuName in this.common_locators.menuBar) {
+            await this.page.locator(this.common_locators.burger).click()
+            await this.page.locator(this.common_locators.menuBar[menuName]).waitFor({ 'state': 'visible' })
+            await this.page.locator(this.common_locators.menuBar[menuName]).click({ force: true })
+
+            let closeMenuBtn = this.page.locator(this.common_locators.menuBar['closeMenu'])
+            if (await closeMenuBtn.isVisible()) closeMenuBtn.click()
 
         } else {
             console.log(`There is no such a key named [${menuName}] in menu bar.`);
@@ -72,19 +84,19 @@ export class CommonSauceDemo {
         }
     }
 
-    async gotoPage(pageName: keyof typeof common_locators.pages, byLink: boolean = false) {
+    async gotoPage(pageName: keyof typeof this.common_locators.pages, byLink: boolean = false) {
         if (byLink) {
-            await this.common.page.goto(common_locators.pages[pageName])
+            await this.page.goto(this.common_locators.pages[pageName])
         } else {
-            await this.common.page.locator(common_locators.pages[pageName]).click()
+            await this.page.locator(this.common_locators.pages[pageName]).click()
         }
     }
 
     async ToastError(errorText: string) {
-        let locator = this.common.page.locator(common_locators['toast'])
+        let locator = this.page.locator(this.common_locators['toast'])
 
         if (await locator.isVisible()) {
-            await expect(locator).toContainText(errorText)
+            await this.expect(locator).toContainText(errorText)
         } else {
             throw new Error('No Toast were found on this page.')
         }
@@ -102,7 +114,7 @@ export class CommonSauceDemo {
      * @returns none.
      */
     async runLoginTest(userName: string, pass: string, checkToast: boolean = false, errorText: any = null) {
-        await loginPage.LoginSauce(this.common, userName, pass)
+        await this.login.LoginSauce(userName, pass)
         if (checkToast) {
             await this.ToastError(errorText);
             console.log(`Toast error match!`)
@@ -120,18 +132,18 @@ export class CommonSauceDemo {
     * @returns none.
     */
     async runCheckoutTest(fName: string, lName: string, zipCode: string, checkToast: boolean = false, errorText: any = null) {
-        await checkoutPage.FillInformation(this.common, fName, lName, zipCode)
+        await this.checkout.FillInformation(fName, lName, zipCode)
         if (checkToast) {
             await this.ToastError(errorText)
             console.log('Toast error match!')
         }
     }
     async backToShoppingTest() {
-        await cartPage.backToShopping(this.common)
+        await this.cart.backToShopping()
     }
 
     async commitPurchaseTest() {
-        await cartPage.commitPurchase(this.common)
+        await this.cart.commitPurchase()
     }
 
     /**
@@ -142,7 +154,7 @@ export class CommonSauceDemo {
      * @returns none.
      */
     async runAddProductTest(products: string[], isAdd: boolean = true) {
-        await productPage.addOrRemoveProducts(this.common, products, isAdd)
+        await this.product.addOrRemoveProducts(products, isAdd)
     }
 
 
@@ -153,7 +165,7 @@ export class CommonSauceDemo {
     * @returns none.
     */
     async filterSelectTest(method = 'az') {
-        await productPage.changeFilterByValue(this.common, method)
+        await this.product.changeFilterByValue(method)
     }
     // adding full control for all SAUCEDEMO Page later.
 
@@ -166,7 +178,7 @@ export class CommonSauceDemo {
      * @returns Object
      */
     async getProductTest(products: string[]) {
-        await productPage.getProducts(this.common, products)
+        await this.product.getProducts(products)
     }
 
     /**
@@ -176,10 +188,10 @@ export class CommonSauceDemo {
      * @returns none
      */
     async removeCartItemsTest(products: string[]) {
-        await cartPage.removeProducts(this.common, products)
+        await this.cart.removeProduct(products)
     }
 
     async verifyItemsInCartTest(products: string[]) {
-        await cartPage.verifyItemsInCart(this.common, products)
+        await this.cart.verifyItemInCart(products)
     }
 }

@@ -1,113 +1,109 @@
-import { CommonKeywords } from "../../common"
+import { BasePage } from "../../basePage"
 
-export const checkoutPageLocators = {
-    // sub page - information page
-    informationPageHeader: "xpath=//span[@class='title' and text()='Checkout: Your Information']",
-    informationForm: {
-        firstName: "xpath=//input[@id='first-name']",
-        lastName: "xpath=//input[@id='last-name']",
-        postalCode: "xpath=//input[@id='postal-code']",
-        next: "xpath=//input[@id='continue']",
-        back: "xpath=//button[@id='cancel']"
-    },
-    // sub page - Overview
-    overviewPageHeader: "xpath=//span[@class='title' and text()='Checkout: Overview']",
+export class SDCheckoutPage extends BasePage {
+    checkoutPageLocators = {
+        // sub page - information page
+        informationPageHeader: "xpath=//span[@class='title' and text()='Checkout: Your Information']",
+        informationForm: {
+            firstName: "xpath=//input[@id='first-name']",
+            lastName: "xpath=//input[@id='last-name']",
+            postalCode: "xpath=//input[@id='postal-code']",
+            next: "xpath=//input[@id='continue']",
+            back: "xpath=//button[@id='cancel']"
+        },
+        // sub page - Overview
+        overviewPageHeader: "xpath=//span[@class='title' and text()='Checkout: Overview']",
 
-    billingInformation: {
-        shippingId: "xpath=//div[text()='Payment Information:']/following-sibling::div[1]",
-        shippingInformation: "xpath=//div[text()='Shipping Information:']/following-sibling::div[1]",
-        price: "xpath=//div[@class='summary_subtotal_label']",
-        tax: "xpath=//div[@class='summary_tax_label']",
-        totalPrice: "xpath=//div[@class='summary_total_label']"
-    },
+        billingInformation: {
+            shippingId: "xpath=//div[text()='Payment Information:']/following-sibling::div[1]",
+            shippingInformation: "xpath=//div[text()='Shipping Information:']/following-sibling::div[1]",
+            price: "xpath=//div[@class='summary_subtotal_label']",
+            tax: "xpath=//div[@class='summary_tax_label']",
+            totalPrice: "xpath=//div[@class='summary_total_label']"
+        },
 
-    itemBox: {
-        all: "xpath=//div[@class='cart_item_label']",
-        individual: "xpath=//div[@class='cart_item_label' and .//div[@class='inventory_item_name' and contains(text(),'[TO_CHANGE]')]]",
-        itemName: "//div[@class='inventory_item_name']",
-        itemPrice: "//div[@class='item_pricebar']"
-    },
-    confirmShippingBtn: "xpath=//button[@id='finish']",
-    // sub page - Complete
-    completePageHeader: "xpath=//span[@class='title' and text()='Checkout: Complete!']",
-    // msgHeader: "xpath=//h2[contains(text(),'Thank you for your order!')]",
-    msgHeader: "xpath=//h2[@class='complete-header']",
-    msgDetail: "xpath=//h2[@class='complete-header']/following-sibling::div",
-    backToHomeBtn: "xpath=//button[@id='back-to-products']"
-}
-
+        itemBox: {
+            all: "xpath=//div[@class='cart_item_label']",
+            individual: "xpath=//div[@class='cart_item_label' and .//div[@class='inventory_item_name' and contains(text(),'[TO_CHANGE]')]]",
+            itemName: "//div[@class='inventory_item_name']",
+            itemPrice: "//div[@class='item_pricebar']"
+        },
+        confirmShippingBtn: "xpath=//button[@id='finish']",
+        // sub page - Complete
+        completePageHeader: "xpath=//span[@class='title' and text()='Checkout: Complete!']",
+        // msgHeader: "xpath=//h2[contains(text(),'Thank you for your order!')]",
+        msgHeader: "xpath=//h2[@class='complete-header']",
+        msgDetail: "xpath=(//h2[@class='complete-header']/following-sibling::div)[1]",
+        backToHomeBtn: "xpath=//button[@id='back-to-products']"
+    }
     /**
     * Fill checkout information.
-    * @param common  as CommonKeywords.
     * @param fName as first name.
     * @param lName as last name.
     * @param zipCode as zip code.
     * @returns none.
     */
-export async function FillInformation(common: CommonKeywords, fName: string, lName: string, zipCode: string) {
-    await common.fillText(checkoutPageLocators.informationForm.firstName, fName)
-    await common.fillText(checkoutPageLocators.informationForm.lastName, lName)
-    await common.fillText(checkoutPageLocators.informationForm.postalCode, zipCode)
+    async FillInformation(fName: string, lName: string, zipCode: string) {
+        await this.fillText(this.checkoutPageLocators.informationForm.firstName, fName)
+        await this.fillText(this.checkoutPageLocators.informationForm.lastName, lName)
+        await this.fillText(this.checkoutPageLocators.informationForm.postalCode, zipCode)
 
-    await common.clickElement(checkoutPageLocators.informationForm.next)
-}
+        await this.clickElement(this.checkoutPageLocators.informationForm.next)
+    }
 
     /**
     * Sum total price from each items and validate it with expected price.
-    * @param common  as CommonKeywords.
     * @param expectedPrice as the expected price to validate.
     * @returns totalPrice
     */
-export async function SumTotalFromItems(common: CommonKeywords, expectedPrice: number) {
-    let totalPrice = 0;
-    let items = await common.page.locator(checkoutPageLocators.itemBox.all).all()
+    async SumTotalFromItems(expectedPrice: number) {
+        let totalPrice = 0;
+        let items = await this.page.locator(this.checkoutPageLocators.itemBox.all).all()
 
-    for (const item of items) {
-        let raw = (await item.locator(checkoutPageLocators.itemBox.itemPrice).innerText()) ?? ''
-        let price = parseFloat(raw.split('$').pop()?.trim() ?? '')
-        if (!isNaN(price)) totalPrice += price
+        for (const item of items) {
+            let raw = (await item.locator(this.checkoutPageLocators.itemBox.itemPrice).innerText()) ?? ''
+            let price = parseFloat(raw.split('$').pop()?.trim() ?? '')
+            if (!isNaN(price)) totalPrice += price
+        }
+
+        console.log(`Total price is : ${totalPrice}`)
+        if (expectedPrice != totalPrice) throw new Error(`Total price and Expected price is not equal.`)
+        return totalPrice
     }
 
-    console.log(`Total price is : ${totalPrice}`)
-    if (expectedPrice != totalPrice) throw new Error(`Total price and Expected price is not equal.`)
-    return totalPrice
-}
-
     /**
     * Get shipping information and return as object.
-    * @param common  as CommonKeywords.
     * @returns shippingInformation
     */
-export async function GetShippingInformation(common: CommonKeywords) {
-    const shipLocator = checkoutPageLocators.billingInformation
-    let maxTimeout = 5000
-    let shippingInformation : {[keys:string]: any} = {}
+    async GetShippingInformation() {
+        const shipLocator = this.checkoutPageLocators.billingInformation
+        let maxTimeout = 5000
+        let shippingInformation : {[keys:string]: any} = {}
 
-    shippingInformation['id'] = await common.page.locator(shipLocator.shippingId).innerText({timeout:maxTimeout})
-    shippingInformation['delivery'] = await common.page.locator(shipLocator.shippingInformation).innerText({timeout:maxTimeout})
-    shippingInformation['price'] = await common.page.locator(shipLocator.price).innerText({timeout:maxTimeout})
-    shippingInformation['tax'] = await common.page.locator(shipLocator.tax).innerText({timeout:maxTimeout})
-    shippingInformation['total'] = await common.page.locator(shipLocator.totalPrice).innerText({timeout:maxTimeout})
+        shippingInformation['id'] = await this.page.locator(shipLocator.shippingId).innerText({timeout:maxTimeout})
+        shippingInformation['delivery'] = await this.page.locator(shipLocator.shippingInformation).innerText({timeout:maxTimeout})
+        shippingInformation['price'] = await this.page.locator(shipLocator.price).innerText({timeout:maxTimeout})
+        shippingInformation['tax'] = await this.page.locator(shipLocator.tax).innerText({timeout:maxTimeout})
+        shippingInformation['total'] = await this.page.locator(shipLocator.totalPrice).innerText({timeout:maxTimeout})
 
-    console.log(`Shipping Information : \n${JSON.stringify(shippingInformation)}`);
-    
-    return shippingInformation
-}
+        console.log(`Shipping Information : \n${JSON.stringify(shippingInformation)}`);
+        
+        return shippingInformation
+    }
 
     /**
-    * Get shipping information and return as object.
-    * @param common  as CommonKeywords.
+    * Complete shipping verification.
     * @param textContain as contains text to check from complete header.
-    * @returns none.
     */
-export async function VerifyCompleteShipping(common: CommonKeywords, textContain: string){
+    async VerifyCompleteShipping(textContain: string){
 
-    await common.clickElement(checkoutPageLocators.confirmShippingBtn)
-    await common.verifyPageArrive(checkoutPageLocators.completePageHeader)
-    await common.verifyValueContain(checkoutPageLocators.msgHeader,textContain)
+        await this.clickElement(this.checkoutPageLocators.confirmShippingBtn)
+        await this.verifyPageArrive(this.checkoutPageLocators.completePageHeader)
+        await this.verifyContainsValue(this.checkoutPageLocators.msgHeader,textContain)
 
-    let messageDetail = await common.page.locator(checkoutPageLocators.msgDetail).innerText()
-    console.log(messageDetail);
-    
-    await common.clickElement(checkoutPageLocators.backToHomeBtn)
+        let messageDetail = await this.page.locator(this.checkoutPageLocators.msgDetail).innerText()
+        console.log(messageDetail);
+        
+        await this.clickElement(this.checkoutPageLocators.backToHomeBtn)
+    }
 }
