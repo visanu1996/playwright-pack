@@ -1,17 +1,14 @@
 import { test } from '@playwright/test'
 import { SDCommon } from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
 import { WebDriverManagement } from '../../utils/driverFactory'
-import { BasePage } from '../../resources/basePage'
 
 let wd: WebDriverManagement
-let basePage: BasePage
 let sauce: SDCommon
 
 test.describe.serial('QA-DEMO', () => {
     test.setTimeout(0);
     test.beforeAll(async () => {
         wd = new WebDriverManagement()
-        basePage = new BasePage(wd)
         sauce = new SDCommon(wd)
 
         await wd.startBrowser()
