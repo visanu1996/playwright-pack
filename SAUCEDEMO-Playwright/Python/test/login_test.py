@@ -5,7 +5,6 @@ class TestLogin:
     def setup_method(self):
         self.wd, self.webs = create_test_session()
         self.sauce_common = SauceCommonFlows(self.wd)
-        self.login_page = self.sauce_common.login_page
         self.webs.web_setup()
         
     def teardown_method(self):
@@ -13,15 +12,15 @@ class TestLogin:
         self.wd.close_browser()
         
     def test_login1(self):
-        self.login_page.login("","Hi")
-        self.login_page.verify_toast("Username is required")
+        self.sauce_common.login_page.login("","Hi")
+        self.sauce_common.login_page.verify_toast("Username is required")
         
     def test_login2(self):
-        self.login_page.login("Test","")
-        self.login_page.verify_toast("Password is required")
+        self.sauce_common.login_page.login("Test","")
+        self.sauce_common.login_page.verify_toast("Password is required")
     
     def test_login3(self):
-        self.login_page.login_with_std_cred()
+        self.sauce_common.login_page.login_with_std_cred()
         
     def test_switch_yt(self):
         self.wd.switch_to_page('YT')

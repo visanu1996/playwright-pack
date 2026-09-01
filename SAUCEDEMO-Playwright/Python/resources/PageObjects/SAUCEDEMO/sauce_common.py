@@ -70,7 +70,6 @@ class SauceCommonFlows:
         from resources.PageObjects.SAUCEDEMO.product_page import ProductPage
         from resources.PageObjects.SAUCEDEMO.cart_page import CartPage
         from resources.PageObjects.SAUCEDEMO.checkout_page import CheckoutPage
-
         self.login_page = LoginPage(wd)
         self.product_page = ProductPage(wd)
         self.cart_page = CartPage(wd)
