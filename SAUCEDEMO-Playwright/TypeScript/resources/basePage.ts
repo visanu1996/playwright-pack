@@ -107,7 +107,7 @@ export class BasePage {
   }
 
   
-  private set_timeout(timeout: number | null = null): number {
+  protected set_timeout(timeout: number | null = null): number {
     return timeout == null ? this.config.globalWait : timeout;
   }
 }
