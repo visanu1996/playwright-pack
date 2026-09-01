@@ -8,7 +8,7 @@ class TestProduct:
         self.sauce_common = SauceCommonFlows(self.wd)
 
         self.webs.web_setup()
-        self.sauce_common.login_class.login_with_std_cred()
+        self.sauce_common.login_page.login_with_std_cred()
         
     def teardown_method(self):
         self.wd.page.wait_for_timeout(1000)

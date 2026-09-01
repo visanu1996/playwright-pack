@@ -36,7 +36,7 @@ class CheckoutPage(SauceDemoBase):
         "completePageHeader": "xpath=//span[@class='title' and text()='Checkout: Complete!']",
         # msgHeader: "xpath=//h2[contains(text(),'Thank you for your order!')]",
         "msgHeader": "xpath=//h2[@class='complete-header']",
-        "msgDetail": "xpath=//h2[@class='complete-header']/following-sibling::div",
+        "msgDetail": "xpath=(//h2[@class='complete-header']/following-sibling::div)[1]",
         "backToHomeBtn": "xpath=//button[@id='back-to-products']",
     }
 
