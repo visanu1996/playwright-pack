@@ -1,7 +1,7 @@
-import { BasePage } from "../../basePage";
+import { BasePage, filterMode } from "@core/BasePage";
 
 export class SDProductPage extends BasePage{
-    productPageLocators = {
+    public productPageLocators = {
         productHeader: "xpath=//span[@class='title' and text()='Products']",
         itemBox: {
             mainBox: "xpath=(//div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'[TO_CHANGE]')]])[1]",
@@ -14,9 +14,9 @@ export class SDProductPage extends BasePage{
         filter: "xpath=//select[@class='product_sort_container']"
     }
 
-    productsDetail: Record<string, any> = {};
+    protected productsDetail: Record<string, any> = {};
 
-
+    
 
     /**
      * Add or remove product into the cart based on given name, 
@@ -31,11 +31,10 @@ export class SDProductPage extends BasePage{
         for (let product of products){
             let productBox = this.productPageLocators.itemBox['mainBox'].replace('[TO_CHANGE]',product)
             let addBtn = productBox + this.productPageLocators.itemBox['addBtn']
-
             let btnText
             // can't find other way to handle failed from timeout.
             try {
-                btnText = await this.page.locator(addBtn).textContent({ timeout: 2000 })
+                btnText = await this.getInnerText(addBtn)
             } catch {
                 btnText = null
             }
@@ -71,8 +70,8 @@ export class SDProductPage extends BasePage{
             let product_box = this.productPageLocators.itemBox['mainBox'].replace('[TO_CHANGE]', product)
 
             try {
-                let productDesc = await this.page.locator(product_box + this.productPageLocators.itemBox['itemDesc']).textContent({ timeout: 2000 })
-                let productPrice = await this.page.locator(product_box + this.productPageLocators.itemBox['itemPrice']).textContent({ timeout: 2000 })
+                let productDesc = await this.getInnerText(product_box + this.productPageLocators.itemBox['itemDesc'])
+                let productPrice = await this.getInputValue(product_box + this.productPageLocators.itemBox['itemPrice'])
                 this.productsDetail[product] = { "description": productDesc, "price": productPrice }
 
             } catch {
@@ -84,19 +83,8 @@ export class SDProductPage extends BasePage{
         return this.productsDetail
     }
 
-    /**
-     * select filter by its values (force to use value only)
-     * @param method  the value to be select. (e.g., "za", "lohi")
-     */
-    async changeFilterByValue(method: string = 'az') {
-        const methods = ['az', 'za', 'lohi', 'hilo']
-        const filterLocator = this.page.locator(this.productPageLocators.filter)
-        if (methods.includes(method)) {
-            await filterLocator.selectOption({ value: method })
-            await this.expect(filterLocator).toHaveValue(method)
-        } else {
-            console.log(`There is no such ${method} in ${methods}`);
-        }
+    async changeProductFilter(type: filterMode , value: any){
+        await this.changeFilter(this.productPageLocators.filter,type, value)
     }
     
 }

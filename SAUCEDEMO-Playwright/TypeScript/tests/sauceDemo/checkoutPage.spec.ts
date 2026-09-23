@@ -1,46 +1,47 @@
 import { test } from '@playwright/test'
-import { SDCommon } from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
-import { WebDriverManagement } from '../../utils/driverFactory'
+import {CentralizeSD} from '../../src/pages/saucedemo/CentralizeSD'
+import { WebDriver } from '../../src/core/DriverFactory'
 
-let wd: WebDriverManagement
-let sauce: SDCommon
+let wd: WebDriver
+let sauce: CentralizeSD
 
-test.describe.serial('QA-DEMO', () => {
-    test.setTimeout(0);
-    test.beforeAll(async () => {
-        wd = new WebDriverManagement()
-        sauce = new SDCommon(wd)
+test.describe('Checkout', async() => {
+    test.beforeEach(async () =>{
+        wd = new WebDriver()
+        sauce = new CentralizeSD(wd)
 
         await wd.startBrowser()
-        await sauce.createPage(sauce.config.webURL, 'sauce')
-        await sauce.login.LoginSauce('standard_user', 'secret_sauce')
+        await sauce.createSDPage()
+        await sauce.runLoginTest('standard_user', 'secret_sauce')
         await sauce.verifyPageArrive(sauce.product.productPageLocators.productHeader)
 
         await sauce.runAddProductTest(['Backpack', 'Bike Light', 'T-Shirt'])
         await sauce.gotoPage("cart")
         await sauce.verifyItemsInCartTest(['Backpack', 'Bike Light', 'T-Shirt'])
         await sauce.commitPurchaseTest()
+    })
 
-    });
-    test.afterAll(async () => {
-        await sauce.page.waitForTimeout(5000)
-        wd.closeBrowser()
+    test.afterEach(async () => {
+        await wd.closeBrowser()
     });
 
     test('TC001 Not adding information in checkout information page.', async () => {
-        await sauce.runCheckoutTest("", "", "", true, "First Name is required")
-        await sauce.runCheckoutTest("Visan", "", "1235", true, "Last Name is required")
-        await sauce.runCheckoutTest("Visan", "Laster", "", true, "Postal Code is required")
+        await sauce.runCheckoutTest("", "", "", {checkToast:true, Msg:"First Name is required"})
+        await sauce.runCheckoutTest("Visan", "", "1235", {checkToast:true, Msg:"Last Name is required"})
+        await sauce.runCheckoutTest("Visan", "Laster", "", {checkToast:true, Msg:"Postal Code is required"})
         await sauce.runCheckoutTest("Visan", "Laster", "12345")
     });
     test('TC002 Check total price, items price compare to total price.', async () => {
+        await sauce.runCheckoutTest("Visan", "Laster", "12345")
         await sauce.checkout.SumTotalFromItems(55.97)
     });
     test('TC003 Get Shipping Information', async () => {
+        await sauce.runCheckoutTest("Visan", "Laster", "12345")
         await sauce.checkout.GetShippingInformation()
     });
 
     test('TC004 Verify complete message', async () => {
-        await sauce.checkout.VerifyCompleteShipping("Thank you for your order!")
+        await sauce.runCheckoutTest("Visan", "Laster", "12345")
+        await sauce.checkout.completeShipping("Thank you for your order!")
     });
 });

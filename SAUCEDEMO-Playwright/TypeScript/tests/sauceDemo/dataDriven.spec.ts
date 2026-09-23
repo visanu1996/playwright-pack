@@ -1,26 +1,25 @@
 import { test } from '@playwright/test'
-import { WebDriverManagement } from '../../utils/driverFactory'
-import { SDCommon } from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
+import {CentralizeSD} from '../../src/pages/saucedemo/CentralizeSD'
+import { WebDriver } from '../../src/core/DriverFactory'
+import * as testdata from '../../src/config/testdata'
 
-let wd: WebDriverManagement
-let sauce: SDCommon
+let wd: WebDriver
+let sauce: CentralizeSD
 
-test.describe.serial('SauceDemo Data Driven', () => {
-    test.setTimeout(0);
-    test.beforeAll(async () => {
-        wd = new WebDriverManagement()
-        sauce = new SDCommon(wd)
-
+test.describe('SauceDemo Data Driven', async () => {
+    test.beforeEach(async () => {
+        wd = new WebDriver()
+        sauce = new CentralizeSD(wd)
         await wd.startBrowser()
-        await sauce.createPage(sauce.config.webURL, 'sauce')
+        await sauce.createSDPage()
     });
 
-    test.afterAll(async () => {
-        await sauce.page.waitForTimeout(5000)
-        wd.closeBrowser()
+    test.afterEach(async () => {
+        await wd.closeBrowser()
     });
 
     test('Full Run', async () => {
-        await sauce.runFullTest(sauce.testData.user.standard, sauce.testData.password, ['Backpack', 'Bike Light'], 'Berk', 'Rising', '10210')
+        // TODO : Add helper to read csv and run test as iteration
+        await sauce.runFullTest(testdata.user.standard, testdata.password, ['Backpack', 'Bike Light'], 'Berk', 'Rising', '10210')
     });
 })

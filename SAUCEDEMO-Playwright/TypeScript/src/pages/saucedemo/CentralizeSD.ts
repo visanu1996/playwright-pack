@@ -1,26 +1,51 @@
-import { BasePage } from "../../basePage"
-import { WebDriverManagement } from "../../../utils/driverFactory"
-import { SDLoginPage } from './loginPage'
-import { SDProductPage } from './productPage'
-import { SDCartPage } from './cartPage'
-import { SDCheckoutPage } from './checkoutPage'
+import { BasePage } from "@core/BasePage"
+import { WebDriver } from "@core/DriverFactory"
+import { SDLoginPage } from '@pages/saucedemo/loginPage'
+import { SDProductPage } from '@pages/saucedemo/productPage'
+import { SDCartPage } from '@pages/saucedemo/cartPage'
+import { SDCheckoutPage } from '@pages/saucedemo/checkoutPage'
 
 
-export class SDCommon extends BasePage {
+/**
+ * CentralizeSD
+ *
+ * This class composes the individual page objects for the SauceDemo app
+ * (`SDLoginPage`, `SDProductPage`, `SDCartPage`, `SDCheckoutPage`) and
+ * exposes them as properties so tests can call their methods directly.
+ *
+ * The composition pattern lets `CentralizeSD` borrow functionality from the
+ * contained page objects and reuse those functions as its own in higher-level
+ * flows (see `runFullTest` which orchestrates login, product selection,
+ * checkout and verification by delegating to the composed objects).
+ *
+ * Example:
+ * ```ts
+ * const central = new CentralizeSD(wd);
+ * await central.login.LoginSauce('standard_user', 'secret_sauce');
+ * await central.product.addOrRemoveProducts(['Sauce Labs Backpack']);
+ * await central.cart.commitPurchase();
+ * ```
+ *
+ * @property {SDLoginPage} login - login page helper
+ * @property {SDProductPage} product - product page helper
+ * @property {SDCartPage} cart - cart page helper
+ * @property {SDCheckoutPage} checkout - checkout page helper
+ */
+export class CentralizeSD extends BasePage {
     public login: SDLoginPage
     public product: SDProductPage
     public cart: SDCartPage
     public checkout: SDCheckoutPage
 
-    constructor(wd: WebDriverManagement) {
+    constructor(wd: WebDriver) {
         super(wd)
-        this.login = new SDLoginPage(this.wd)
-        this.product = new SDProductPage(this.wd)
-        this.cart = new SDCartPage(this.wd)
-        this.checkout = new SDCheckoutPage(this.wd)
+        this.login = new SDLoginPage(wd)
+        this.product = new SDProductPage(wd)
+        this.cart = new SDCartPage(wd)
+        this.checkout = new SDCheckoutPage(wd)
     }
 
-    common_locators = {
+    protected common_locators = {
         burger: "xpath=//button[@id='react-burger-menu-btn']",
         menuBar: {
             allItems: "xpath=//a[text()='All Items']",
@@ -59,7 +84,7 @@ export class SDCommon extends BasePage {
         // Step 4 : Confirm Shipping.
         await this.checkout.FillInformation(fName, lName, zipcode)
         await this.checkout.GetShippingInformation()
-        await this.checkout.VerifyCompleteShipping("Thank you for your order!")  // Don't need to check fail case anymore.
+        await this.checkout.completeShipping("Thank you for your order!")  // Don't need to check fail case anymore.
         // Step 5 : Log out.
         await this.menuSelect("logout")
     }
@@ -92,31 +117,32 @@ export class SDCommon extends BasePage {
         }
     }
 
-    async ToastError(errorText: string) {
-        let locator = this.page.locator(this.common_locators['toast'])
+    // async ToastError(errorText: string) {
+    //     let locator = this.page.locator(this.common_locators['toast'])
 
-        if (await locator.isVisible()) {
-            await this.expect(locator).toContainText(errorText)
-        } else {
-            throw new Error('No Toast were found on this page.')
-        }
-    }
+    //     if (await locator.isVisible()) {
+    //         await this.expect(locator).toContainText(errorText)
+    //     } else {
+    //         throw new Error('No Toast were found on this page.')
+    //     }
+    // }
+
 
 
     // -------------------------------------- test module functions. --------------------------------------
     /**
      * Test login valid or invalid credentials, also check toast and it message if it's needed.
      * Use in sauce common for centralize reasons.
-     * @param userName  as a username for login.
+     * @param username  as a username for login.
      * @param pass as a password for login.
      * @param checkToast default is false, use to check that Toast is popped or not.
      * @param errorText use with checkToast to see the expected contains text from toast.
      * @returns none.
      */
-    async runLoginTest(userName: string, pass: string, checkToast: boolean = false, errorText: any = null) {
-        await this.login.LoginSauce(userName, pass)
-        if (checkToast) {
-            await this.ToastError(errorText);
+    async runLoginTest(username: string, pass: string, options?:{checkToast?: boolean , errorText: string}) {
+        await this.login.LoginSauce(username, pass)
+        if (options?.checkToast) {
+            await this.verifyToast(this.common_locators.toast,options.errorText)
             console.log(`Toast error match!`)
         }
     }
@@ -131,13 +157,14 @@ export class SDCommon extends BasePage {
     * @param errorText use with checkToast to see the expected contains text from toast.
     * @returns none.
     */
-    async runCheckoutTest(fName: string, lName: string, zipCode: string, checkToast: boolean = false, errorText: any = null) {
+    async runCheckoutTest(fName: string, lName: string, zipCode: string, options?:{checkToast?: boolean, Msg: string}) {
         await this.checkout.FillInformation(fName, lName, zipCode)
-        if (checkToast) {
-            await this.ToastError(errorText)
+        if (options?.checkToast) {
+            await this.verifyToast(this.common_locators.toast,options.Msg)
             console.log('Toast error match!')
         }
     }
+    
     async backToShoppingTest() {
         await this.cart.backToShopping()
     }
@@ -157,25 +184,11 @@ export class SDCommon extends BasePage {
         await this.product.addOrRemoveProducts(products, isAdd)
     }
 
-
     /**
-    * Add or remove product into the cart based on given name.
-    * Use in sauce common for centralize reasons.
-    * @param products as array(e.g., "Bike Light", "Fleeces")
-    * @returns none.
-    */
-    async filterSelectTest(method = 'az') {
-        await this.product.changeFilterByValue(method)
-    }
-    // adding full control for all SAUCEDEMO Page later.
-
-
-    /**
-     * Get products details based on given name, 
-     * No error if items is not visible on page nor available.
-     * @param common as CommonKeywords as playwright control.
-     * @param products  products as array. (e.g., "Bike Light", "Fleeces")
-     * @returns Object
+    * Get products details based on given name, 
+    * No error if items is not visible on page nor available.
+    * @param products  products as array. (e.g., "Bike Light", "Fleeces")
+    * @returns Object
      */
     async getProductTest(products: string[]) {
         await this.product.getProducts(products)
@@ -183,7 +196,6 @@ export class SDCommon extends BasePage {
 
     /**
      * Remove items from cart.
-     * @param common as CommonKeywords as playwright control.
      * @param products  products as array. (e.g., "Bike Light", "Fleeces")
      * @returns none
      */
@@ -193,5 +205,9 @@ export class SDCommon extends BasePage {
 
     async verifyItemsInCartTest(products: string[]) {
         await this.cart.verifyItemInCart(products)
+    }
+
+    async createSDPage(){
+        await this.createPage(this.config.webURL.SD, "SD")
     }
 }

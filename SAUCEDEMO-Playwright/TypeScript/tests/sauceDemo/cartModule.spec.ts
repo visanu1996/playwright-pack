@@ -1,25 +1,23 @@
 import { test } from '@playwright/test'
-import { SDCommon } from '../../resources/PageObjects/SAUCEDEMO/sauce_common'
-import { WebDriverManagement } from '../../utils/driverFactory'
+import {CentralizeSD} from '../../src/pages/saucedemo/CentralizeSD'
+import { WebDriver } from '../../src/core/DriverFactory'
 
-let wd: WebDriverManagement
-let sauce: SDCommon
+let wd: WebDriver
+let sauce: CentralizeSD
 
-test.describe.serial('QA-DEMO', () => {
-    test.setTimeout(0);
-    test.beforeAll(async () => {
-        wd = new WebDriverManagement()
-        sauce = new SDCommon(wd)
-
+test.describe('Cart', () => {
+    test.beforeEach(async () =>{
+        wd = new WebDriver()
+        sauce = new CentralizeSD(wd)
+        
         await wd.startBrowser()
-        await sauce.createPage(sauce.config.webURL,'sauce')
-        await sauce.login.LoginSauce('standard_user', 'secret_sauce')
+        await sauce.createSDPage()
+        await sauce.runLoginTest('standard_user', 'secret_sauce')
         await sauce.verifyPageArrive(sauce.product.productPageLocators.productHeader)
-    });
+    })
 
-    test.afterAll(async () => {
-        await sauce.page.waitForTimeout(5000)
-        wd.closeBrowser()
+    test.afterEach(async () => {
+        await wd.closeBrowser()
     });
 
     test('TC001 Add valid products and check it from cart', async () => {
@@ -29,14 +27,18 @@ test.describe.serial('QA-DEMO', () => {
     });
 
     test('TC002 Remove item from cart', async () => {
+        await sauce.runAddProductTest(['Backpack', 'Bike Light', 'T-Shirt'])
+        await sauce.gotoPage("cart")
         await sauce.removeCartItemsTest(['Backpack', 'T-Shirt'])
     });
+
     test('TC003 Continue Shoping then add new items and commit purchases', async () => {
+        await sauce.runAddProductTest(['Backpack', 'Bike Light', 'T-Shirt'])
+        await sauce.gotoPage("cart")
         await sauce.backToShoppingTest()
         await sauce.runAddProductTest(['Backpack'])
         await sauce.gotoPage("cartLink", true)
         await sauce.verifyItemsInCartTest(['Backpack', 'Bike Light'])
         await sauce.commitPurchaseTest()
-        await sauce.page.waitForTimeout(5000)
     });
 })

@@ -1,4 +1,4 @@
-import { BasePage } from "../../basePage"
+import { BasePage } from "@core/BasePage"
 
 export class SDCartPage extends BasePage{
     
@@ -15,10 +15,9 @@ export class SDCartPage extends BasePage{
         removeBtn: "//button[text()='Remove']",
     }
     /**
-     * Remove Item from cart and verify that it is removed.
-     * @param common - CommonKeywords instance
-     * @param products - e.g., "Backpack", "Jacket")
-     * @returns none.
+    * Remove Item from cart and verify that it is removed.
+    * @param products - e.g., "Backpack", "Jacket")
+    * @returns none.
      */
     async removeProduct(products:string[]){
         for(let product of products){

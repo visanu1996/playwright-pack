@@ -1,7 +1,7 @@
-import { BasePage } from "../../basePage"
+import { BasePage } from "@core/BasePage"
 
 export class SDCheckoutPage extends BasePage {
-    checkoutPageLocators = {
+    protected checkoutPageLocators = {
         // sub page - information page
         informationPageHeader: "xpath=//span[@class='title' and text()='Checkout: Your Information']",
         informationForm: {
@@ -92,16 +92,16 @@ export class SDCheckoutPage extends BasePage {
     }
 
     /**
-    * Complete shipping verification.
+    * Complete shipping and verify it is complete.
     * @param textContain as contains text to check from complete header.
     */
-    async VerifyCompleteShipping(textContain: string){
+    async completeShipping(textContain: string){
 
         await this.clickElement(this.checkoutPageLocators.confirmShippingBtn)
         await this.verifyPageArrive(this.checkoutPageLocators.completePageHeader)
         await this.verifyContainsValue(this.checkoutPageLocators.msgHeader,textContain)
-
-        let messageDetail = await this.page.locator(this.checkoutPageLocators.msgDetail).innerText()
+    
+        let messageDetail = await this.getInnerText(this.checkoutPageLocators.msgDetail)
         console.log(messageDetail);
         
         await this.clickElement(this.checkoutPageLocators.backToHomeBtn)
