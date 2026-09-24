@@ -15,9 +15,9 @@ test.describe('Checkout', async() => {
         await sauce.runLoginTest('standard_user', 'secret_sauce')
         await sauce.verifyPageArrive(sauce.product.productPageLocators.productHeader)
 
-        await sauce.runAddProductTest(['Backpack', 'Bike Light', 'T-Shirt'])
+        await sauce.runAddProductTest('Backpack', 'Bike Light', 'Bolt T-Shirt')
         await sauce.gotoPage("cart")
-        await sauce.verifyItemsInCartTest(['Backpack', 'Bike Light', 'T-Shirt'])
+        await sauce.verifyItemsInCartTest('Backpack', 'Bike Light', 'Bolt T-Shirt')
         await sauce.commitPurchaseTest()
     })
 

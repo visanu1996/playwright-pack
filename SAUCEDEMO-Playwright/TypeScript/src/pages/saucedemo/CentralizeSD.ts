@@ -76,10 +76,10 @@ export class CentralizeSD extends BasePage {
         await this.login.LoginSauce(userName, pass)
         // Step 2 : added items and get products detail.
         await this.verifyPageArrive(this.product.productPageLocators.productHeader)
-        await this.product.addOrRemoveProducts(products)
+        await this.product.addItems(...products)
         await this.gotoPage("cart")
         // Step 3 : Verify Items in cart.
-        await this.cart.verifyItemInCart(products)
+        await this.cart.verifyItemInCart(...products)
         await this.cart.commitPurchase()
         // Step 4 : Confirm Shipping.
         await this.checkout.FillInformation(fName, lName, zipcode)
@@ -174,24 +174,25 @@ export class CentralizeSD extends BasePage {
     }
 
     /**
-     * Add or remove product into the cart based on given name.
+     * Add product into the cart based on given name.
      * Use in sauce common for centralize reasons.
      * @param products as array(e.g., "Bike Light", "Fleeces")
      * @param [isAdd=true] add item if true, remove if false, default is true
      * @returns none.
      */
-    async runAddProductTest(products: string[], isAdd: boolean = true) {
-        await this.product.addOrRemoveProducts(products, isAdd)
+    async runAddProductTest(...products: string[]) {
+        await this.product.addItems(...products)
     }
 
     /**
-    * Get products details based on given name, 
-    * No error if items is not visible on page nor available.
-    * @param products  products as array. (e.g., "Bike Light", "Fleeces")
-    * @returns Object
+     * Remove product into the cart based on given name.
+     * Use in sauce common for centralize reasons.
+     * @param products as array(e.g., "Bike Light", "Fleeces")
+     * @param [isAdd=true] add item if true, remove if false, default is true
+     * @returns none.
      */
-    async getProductTest(products: string[]) {
-        await this.product.getProducts(products)
+    async runRemoveProductTest(...products: string[]) {
+        await this.product.removeItems(...products)
     }
 
     /**
@@ -199,12 +200,12 @@ export class CentralizeSD extends BasePage {
      * @param products  products as array. (e.g., "Bike Light", "Fleeces")
      * @returns none
      */
-    async removeCartItemsTest(products: string[]) {
-        await this.cart.removeProduct(products)
+    async removeCartItemsTest(...products: string[]) {
+        await this.cart.removeProduct(...products)
     }
 
-    async verifyItemsInCartTest(products: string[]) {
-        await this.cart.verifyItemInCart(products)
+    async verifyItemsInCartTest(...products: string[]) {
+        await this.cart.verifyItemInCart(...products)
     }
 
     async createSDPage(){

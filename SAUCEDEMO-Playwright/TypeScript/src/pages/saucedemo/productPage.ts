@@ -1,90 +1,80 @@
-import { BasePage, filterMode } from "@core/BasePage";
+import { BasePage } from "@core/BasePage";
 
 export class SDProductPage extends BasePage{
     public productPageLocators = {
         productHeader: "xpath=//span[@class='title' and text()='Products']",
-        itemBox: {
-            mainBox: "xpath=(//div[@class='inventory_item' and .//div[@class='inventory_item_name ' and contains(text(),'[TO_CHANGE]')]])[1]",
-            itemImg: "/div[@class='inventory_item_img']", // use after mainBox
-            itemName: "//div[@class='inventory_item_name ']",
-            itemDesc: "//div[@class='inventory_item_desc']",
-            itemPrice: "//div[@class='inventory_item_price']",
-            addBtn: "//button",
-        },
-        filter: "xpath=//select[@class='product_sort_container']"
+        itemBox:
+        'xpath=//div[@class="inventory_item_description" and .//div[@data-test="inventory-item-name" and contains(text(),"[TO_CHANGE]")]]',
+        // ------------- combo use with itemBox
+        itemName: '//div[@data-test="inventory-item-name"]',
+        itemPrice: '//div[@data-test="inventory-item-desc"]',
+        itemDesc: '//div[@data-test="inventory-item-price"]',
+        itemAddBtn: '//button[contains(@data-test,"add")]',
+        itemRevBtn: '//button[contains(@data-test,"remove")]',
+        // ------------- end of combo
+        itemCount: 'xpath=//span[@data-test="shopping-cart-badge"]',
+        filter: 'xpath=//select[@data-test="product-sort-container"]',
     }
 
-    protected productsDetail: Record<string, any> = {};
-
-    
-
-    /**
-     * Add or remove product into the cart based on given name, 
-     * also check that item really added or not.
-     * No error if items is not visible on page nor available.
-     * @param products  products as array. (e.g., "Bike Light", "Fleeces")
-     * @param [isAdd=true] add item if true, remove if false, default is true
-     * @returns none.
-     */
-
-    async addOrRemoveProducts(products: string[], isAdd: boolean = true){
-        for (let product of products){
-            let productBox = this.productPageLocators.itemBox['mainBox'].replace('[TO_CHANGE]',product)
-            let addBtn = productBox + this.productPageLocators.itemBox['addBtn']
-            let btnText
-            // can't find other way to handle failed from timeout.
-            try {
-                btnText = await this.getInnerText(addBtn)
-            } catch {
-                btnText = null
-            }
-
-            if (isAdd && btnText == 'Add to cart') {
-                await this.page.locator(productBox + this.productPageLocators.itemBox['addBtn']).click()
-            } else if (!isAdd && btnText == 'Remove') {
-                await this.page.locator(productBox + this.productPageLocators.itemBox['addBtn']).click()
-            } else {
-                console.log(`\nThere is no product named : ${product} or product is already added or removed.`);
-                console.log(`Method want to delete : ${isAdd}, current btn status : ${btnText}\n`)
-            }
-
-            if (btnText !== null) {
-                btnText = await this.page.locator(addBtn).textContent()
-                let verify = (isAdd) ? 'Remove' : 'Add to cart'
-                await this.page.waitForTimeout(1000)   // wait for button text to change first.
-                await this.expect(this.page.locator(addBtn)).toHaveText(verify, { ignoreCase: true })
-            }
-            }
-    
+    async addItems(...products: string[]) {
+        let productList = await this.setProducts(true, ...products);
+        console.log(`Products add to cart : ${productList}`);
+        return productList
     }
 
-    /**
-     * Get products details based on given name,
-     * No error if items is not visible on page nor available.
-     * @param products  products as array. (e.g., "Bike Light", "Fleeces")
-     * @returns Object
-     */
-    async getProducts(products: string[]) {
+    async removeItems(...products: string[]) {
+        let productList = await this.setProducts(false, ...products);
+        console.log(`Products remove from cart : ${productList}`);
+        return productList
+    }
+
+    async changeProductFilter(value: "za" | "az" | "hilo" | "lohi") {
+        await this.changeFilter(this.productPageLocators.filter, { value: value });
+        await this.expect(this.page.locator(this.productPageLocators.filter)).toHaveJSProperty('value',value)
+    }
+
+    async countItems(expectedCount: number) {
+        if (expectedCount !== 0){
+            await this.expect(
+            this.page.locator(this.productPageLocators.itemCount),
+            ).toContainText(expectedCount.toString());
+        }
+        else await this.expect(
+            this.page.locator(this.productPageLocators.itemCount),
+            ).not.toBeVisible();
+    }
+
+    private async setProducts(isAdd: boolean, ...products: string[]) {
+        const productList: any[] = [];
 
         for (const product of products) {
-            let product_box = this.productPageLocators.itemBox['mainBox'].replace('[TO_CHANGE]', product)
+        const productDetail: Record<string, any> = {};
+        const productBox = this.productPageLocators.itemBox.replace(
+            "[TO_CHANGE]",
+            product,
+        );
+        const productName = await this.page
+            .locator(productBox + this.productPageLocators.itemName)
+            .innerText();
+        const productPrice = await this.page
+            .locator(productBox + this.productPageLocators.itemPrice)
+            .innerText();
+        const productDesc = await this.page
+            .locator(productBox + this.productPageLocators.itemDesc)
+            .innerText();
 
-            try {
-                let productDesc = await this.getInnerText(product_box + this.productPageLocators.itemBox['itemDesc'])
-                let productPrice = await this.getInputValue(product_box + this.productPageLocators.itemBox['itemPrice'])
-                this.productsDetail[product] = { "description": productDesc, "price": productPrice }
+        if (isAdd)
+            await this.page
+            .locator(productBox + this.productPageLocators.itemAddBtn)
+            .click();
+        else
+            await this.page
+            .locator(productBox + this.productPageLocators.itemRevBtn)
+            .click();
 
-            } catch {
-                console.log(`There is no product named : ${product}`);
-            }
-
+        productDetail[productName] = { desc: productDesc, price: productPrice };
+        productList.push(productDetail);
         }
-        console.log(this.productsDetail);
-        return this.productsDetail
+        return productList;
     }
-
-    async changeProductFilter(type: filterMode , value: any){
-        await this.changeFilter(this.productPageLocators.filter,type, value)
-    }
-    
 }

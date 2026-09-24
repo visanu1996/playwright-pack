@@ -23,31 +23,26 @@ test.describe('Product', async() => {
     });
 
     test('TC001 Add valid products', async () => {
-        await sauce.runAddProductTest(['Backpack', 'Bike Light', 'T-Shirt'])
+        await sauce.runAddProductTest('Backpack', 'Bike Light', 'Bolt T-Shirt')
+        await sauce.product.countItems(3)
+        
     });
     
-    test('TC002 Add invalid product', async () => {
-        await sauce.runAddProductTest(['Hello World'])
+    test('TC002 Remove valid products', async () => {
+        await sauce.runAddProductTest('Backpack', 'Bike Light', 'Bolt T-Shirt')
+        await sauce.runRemoveProductTest('Backpack', 'Bolt T-Shirt')
+        await sauce.product.countItems(1)
+
     });
     
-    test('TC003 Remove valid products', async () => {
-        await sauce.runAddProductTest(['Backpack', 'Bolt T-Shirt'], false)
-    });
-    
-    test('TC004 Remove invalid products', async () => {
-        await sauce.runAddProductTest(['MyName'], false)
-    });
-    
-    test('TC005 Reset App State, clear all items cart.', async () => {
+    test('TC004 Reset App State, clear all items cart.', async () => {
         // defect from clear cart items (not remove added item from product page.)
         await sauce.menuSelect('resetAppState')
+        await sauce.product.countItems(0)
     });
     
-    test('TC006 Change Value : Z to A', async () => {
-        await sauce.product.changeProductFilter('value','za')
+    test('TC005 Change Value : Z to A', async () => {
+        await sauce.product.changeProductFilter('za')
     });
 
-    test('TC007 Get Products Detail', async () => {
-        await sauce.getProductTest(['Backpack', 'Bike Light', 'T-Shirt'])
-    });
 });

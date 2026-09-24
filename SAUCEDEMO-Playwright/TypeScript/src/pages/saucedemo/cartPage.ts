@@ -19,7 +19,7 @@ export class SDCartPage extends BasePage{
     * @param products - e.g., "Backpack", "Jacket")
     * @returns none.
      */
-    async removeProduct(products:string[]){
+    async removeProduct(...products:string[]){
         for(let product of products){
             const itemBox = this.cartPageLocators.cartItem.replace('[TO_CHANGE]', product)
             const removeBtn = itemBox + this.cartPageLocators.removeBtn
@@ -29,7 +29,7 @@ export class SDCartPage extends BasePage{
         }
     }
 
-    async verifyItemInCart(products:string[]){
+    async verifyItemInCart(...products:string[]){
         for(const product of products){
             const itemBox = this.cartPageLocators.cartItem.replace('[TO_CHANGE]',product)
             const removeItemBtn = itemBox+this.cartPageLocators.removeBtn
