@@ -5,8 +5,6 @@ import { getFilesPath } from "@utils/getFilePath";
 import * as config from '../config/config'
 import * as secret from '../config/testdata'
 
-export type filterMode = 'value' | 'label' | 'index'
-
 /**
  * BasePage
  *
@@ -111,11 +109,8 @@ export abstract class BasePage {
     await this.expect(this.page.locator(locator)).toContainText(containsMsg,{ignoreCase:true})
   }
 
-  protected async changeFilter(locator: string ,by : filterMode, value: any){
-      const loc = this.page.locator(locator)
-      if (by == 'value') await loc.selectOption({value: value})
-      else if (by == "label") await loc.selectOption({label: value})
-      else if (by == "index") await loc.selectOption({index: value})
+  protected async changeFilter(loc: string, options?:{value?:string, label?:string, index?:number}){
+    await this.page.locator(loc).selectOption({value: options?.value, label:options?.label, index:options?.index})
   }
 
   /** Beware some input only except one file. */
