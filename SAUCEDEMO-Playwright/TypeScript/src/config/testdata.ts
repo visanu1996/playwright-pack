@@ -9,3 +9,29 @@ export const user = {
 }
 
 export const password = "secret_sauce"
+
+export const apis = {
+    baseUrl : {
+       sd : 'https://env.saucedemo.com/v1',
+       booker : 'https://restful-booker.herokuapp.com/',
+    },
+    auth : {
+        booker : {
+            user : 'admin',
+            password : 'password123'
+        }
+       
+    }
+}
+
+export const bookingPayload = {
+    firstname: 'John',
+    lastname: 'Brown',
+    totalprice: '300',
+    depositpaid: true,
+    bookingdates: {
+      checkin: '2026-01-01',
+      checkout: '2026-01-07',
+    },
+    additionalneeds: 'Breakfast',
+  };
