@@ -1,8 +1,7 @@
 import { API } from '@core/API'
-import { apis } from '@src/config/testdata'
+import { apis, bookingPayload } from '@src/config/testdata'
 
 export class RestfulBooker extends API {
-    protected headers : Record<string,any> = {'Content-Type':'application/json'}
     private token = ''
 
     async getToken(){
@@ -26,54 +25,23 @@ export class RestfulBooker extends API {
         return await this.client.get(`/booking/${id}`)
     }
 
-    async createBooking(options: {
-        firstname: string;
-        lastname: string;
-        totalprice: '300' | '500' | '1000';
-        depositpaid: boolean;
-        bookingdates: {
-            checkin: string;
-            checkout: string;
-        };
-        additionalneeds: string;
-        }
-    ){
-        return await this.client.post('/booking',{headers:{},data:options})
+    async createBooking(data: typeof bookingPayload){
+        return await this.client.post('/booking',{headers:{},data:data})
     }
 
-    async updateBooking(id:number ,options: {
-        firstname: string;
-        lastname: string;
-        totalprice: '300' | '500' | '1000';
-        depositpaid: boolean;
-        bookingdates: {
-            checkin: string;
-            checkout: string;
-        };
-        additionalneeds: string;
-        })
+    async updateBooking(id:number ,data : typeof bookingPayload)
         {
             return await this.client.put(`/booking/${id}`, {
                 headers: this.withAuthCookie(),
-                data : options
+                data : data
             })
         }
 
-    async partialUpdateBooking(id:number ,options: {
-        firstname?: string;
-        lastname?: string;
-        totalprice?: '300' | '500' | '1000';
-        depositpaid?: boolean;
-        bookingdates?: {
-            checkin?: string;
-            checkout?: string;
-        };
-        additionalneeds?: string;
-        })
+    async partialUpdateBooking(id:number , data: Partial<typeof bookingPayload>)
         {
             return await this.client.patch(`/booking/${id}`, {
                 headers: this.withAuthCookie(),
-                data : options
+                data : data
             })
         }
 

@@ -1,3 +1,5 @@
+import { expect } from "@playwright/test";
+
 // Normally you don't push secret to github !
 export const user = {
     "standard": "standard_user",
@@ -35,3 +37,18 @@ export const bookingPayload = {
     },
     additionalneeds: 'Breakfast',
   };
+
+export const bookingSchema = {
+    bookingid : expect.any(Number),
+    booking : {
+        firstname: expect.any(String),
+        lastname: expect.any(String),
+        totalprice: expect.any(Number),
+        depositpaid: expect.any(Boolean),
+        bookingdates: {
+        checkin: expect.any(String),
+        checkout: expect.any(String),
+        },
+        additionalneeds: expect.any(String),
+    }
+}

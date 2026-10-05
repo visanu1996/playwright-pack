@@ -6,7 +6,7 @@ import * as testdata from '../../src/config/testdata'
 let wd: WebDriver
 let sauce: CentralizeSD
 
-test.describe('SauceDemo Data Driven', async () => {
+test.describe('SauceDemo Data Driven', () => {
     test.beforeEach(async () => {
         wd = new WebDriver()
         sauce = new CentralizeSD(wd)

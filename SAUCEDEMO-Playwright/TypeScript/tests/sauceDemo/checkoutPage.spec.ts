@@ -5,7 +5,7 @@ import { WebDriver } from '../../src/core/DriverFactory'
 let wd: WebDriver
 let sauce: CentralizeSD
 
-test.describe('Checkout', async() => {
+test.describe('Checkout', () => {
     test.beforeEach(async () =>{
         wd = new WebDriver()
         sauce = new CentralizeSD(wd)
