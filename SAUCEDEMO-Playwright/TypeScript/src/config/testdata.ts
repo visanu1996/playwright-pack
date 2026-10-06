@@ -29,7 +29,7 @@ export const apis = {
 export const bookingPayload = {
     firstname: 'John',
     lastname: 'Brown',
-    totalprice: '300' as const,
+    totalprice: 300,
     depositpaid: true,
     bookingdates: {
       checkin: '2026-01-01',

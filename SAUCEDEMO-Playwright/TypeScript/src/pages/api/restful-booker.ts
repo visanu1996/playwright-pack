@@ -7,10 +7,7 @@ export class RestfulBooker extends API {
     async getToken(){
         const response = await this.client.post('/auth',
             {
-                headers:this.headers,
-                data:{username: apis.auth.booker.user, password : apis.auth.booker.password
-
-                }
+                data:{username: apis.auth.booker.user, password : apis.auth.booker.password}
             })
         
         const body = await response.json()
@@ -26,13 +23,13 @@ export class RestfulBooker extends API {
     }
 
     async createBooking(data: typeof bookingPayload){
-        return await this.client.post('/booking',{headers:{},data:data})
+        return await this.client.post('/booking',{data:data})
     }
 
     async updateBooking(id:number ,data : typeof bookingPayload)
         {
             return await this.client.put(`/booking/${id}`, {
-                headers: this.withAuthCookie(),
+                headers: await this.withAuthCookie(),
                 data : data
             })
         }
@@ -40,16 +37,17 @@ export class RestfulBooker extends API {
     async partialUpdateBooking(id:number , data: Partial<typeof bookingPayload>)
         {
             return await this.client.patch(`/booking/${id}`, {
-                headers: this.withAuthCookie(),
+                headers: await this.withAuthCookie(),
                 data : data
             })
         }
 
     async deleteBooking(id: number){
-        return await this.client.delete(`/booking/${id}`,{headers:this.withAuthCookie()})
+        return await this.client.delete(`/booking/${id}`,{headers:await this.withAuthCookie()})
     }
         
-    private withAuthCookie(): Record<string, string>{
+    private async withAuthCookie(){
+        if (!this.token) await this.getToken()
         return {
             ...this.headers,
             Cookie : `token=${this.token}`

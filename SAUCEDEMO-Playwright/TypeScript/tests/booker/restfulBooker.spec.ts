@@ -10,7 +10,6 @@ test.describe('Restful Booker API', () => {
   test.beforeEach(async () => {
     booker = new RestfulBooker(apis.baseUrl.booker);
     await booker.createSession();
-    await booker.getToken()
   });
 
   test.afterEach(async () => {
@@ -24,11 +23,12 @@ test.describe('Restful Booker API', () => {
   })
 
   test('Get Created Book', async()=>{
-    const response = await booker.createBooking(bookingPayload)
-    createBookingId = (await response.json()).bookingid
+    createBookingId = (await(await booker.createBooking(bookingPayload)).json()).bookingid
+
     const getBookResponse = await booker.getBookingById(createBookingId)
     await booker.verifyResponse(getBookResponse, {statusCode: 200, schema: bookingSchema.booking})
 
+    await booker.deleteBooking(createBookingId)
   })
 
   test('Create Book', async()=>{
@@ -42,27 +42,28 @@ test.describe('Restful Booker API', () => {
   })
 
   test('Update Book', async() => {
-    const resposne = await booker.createBooking(bookingPayload)
-    createBookingId = (await resposne.json()).bookingid
+    let data = {...bookingPayload, firstname: 'Lord', lastname: 'Rising'}
+    createBookingId = (await(await booker.createBooking(bookingPayload)).json()).bookingid
 
-    const updateResponse = await booker.updateBooking(createBookingId, {...bookingPayload, firstname: 'Lord', lastname: 'Rising'})
-    await booker.verifyResponse(updateResponse, {statusCode: 200, schema: bookingSchema.booking})
+    const response = await booker.updateBooking(createBookingId, data)
+    await booker.verifyResponse(response, {statusCode: 200, schema: data})
+
+    await booker.deleteBooking(createBookingId)
   })
 
 
   test('Partial Update Book', async()=>{
-    const response = await booker.createBooking(bookingPayload)
-    createBookingId = (await response.json()).bookingid
+    let data = {additionalneeds:'High speed internet.'}
+    createBookingId = (await(await booker.createBooking(bookingPayload)).json()).bookingid
 
-    const updateResponse = await booker.partialUpdateBooking(createBookingId,{additionalneeds:'High speed internet.'})
+    const updateResponse = await booker.partialUpdateBooking(createBookingId,data)
     await booker.verifyResponse(updateResponse, {statusCode: 200, schema: bookingSchema.booking})
 
     await booker.deleteBooking(createBookingId)
   })
 
   test('Delete Book', async()=>{
-    const response = await booker.createBooking(bookingPayload)
-    createBookingId = (await response.json()).bookingid
+    createBookingId = (await(await booker.createBooking(bookingPayload)).json()).bookingid
 
     const deleteResponse = await booker.deleteBooking(createBookingId)
     await booker.verifyResponse(deleteResponse,{statusCode:201})
