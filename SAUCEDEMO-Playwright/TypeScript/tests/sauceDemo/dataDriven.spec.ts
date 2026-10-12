@@ -1,6 +1,6 @@
 import { test } from '@playwright/test'
-import {CentralizeSD} from '../../src/pages/saucedemo/CentralizeSD'
-import { WebDriver } from '../../src/core/DriverFactory'
+import {CentralizeSD} from '@pages/web/saucedemo/CentralizeSD'
+import { WebDriver } from '@core/DriverFactory'
 import * as testdata from '../../src/config/testdata'
 
 let wd: WebDriver

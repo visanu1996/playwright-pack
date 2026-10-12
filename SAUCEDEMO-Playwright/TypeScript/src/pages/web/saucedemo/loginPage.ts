@@ -1,4 +1,4 @@
-import { CommonSD } from "@pages/saucedemo/CommonSD"
+import { CommonSD } from "@pages/web/saucedemo/CommonSD"
 
 /**
  * SDLoginPage

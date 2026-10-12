@@ -1,6 +1,6 @@
 import { test } from "@playwright/test";
 import { WebDriver } from "@src/core/DriverFactory";
-import { UploadPage } from "@src/pages/expandtesting/uploadPage";
+import { UploadPage } from "@src/pages/web/expandtesting/uploadPage";
 
 
 let wd: WebDriver;

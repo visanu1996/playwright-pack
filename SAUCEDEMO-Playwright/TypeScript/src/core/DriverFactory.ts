@@ -4,7 +4,7 @@ import {
   BrowserContext,
   chromium,
 } from "@playwright/test";
-import { globalWait, isHeadless } from "../config/config";
+import { globalWait } from "../config/config";
 
 /**
  * WebDriver
@@ -33,14 +33,4 @@ export class WebDriver {
     console.log(`Browser and Context successfully closed.`)
   }
 
-}
-
-/**
- * MobileDriver
- *
- * Reserved for mobile/browser-device automation scenarios if this project is
- * extended to run on mobile viewports or emulated device contexts.
- */
-export class MobileDriver{
-  
 }

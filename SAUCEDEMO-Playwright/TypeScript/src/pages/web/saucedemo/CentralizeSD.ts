@@ -1,9 +1,9 @@
-import { CommonSD } from "@pages/saucedemo/CommonSD"
+import { CommonSD } from "@pages/web/saucedemo/CommonSD"
 import { WebDriver } from "@core/DriverFactory"
-import { SDLoginPage } from '@pages/saucedemo/loginPage'
-import { SDProductPage } from '@pages/saucedemo/productPage'
-import { SDCartPage } from '@pages/saucedemo/cartPage'
-import { SDCheckoutPage } from '@pages/saucedemo/checkoutPage'
+import { SDLoginPage } from '@pages/web/saucedemo/loginPage'
+import { SDProductPage } from '@pages/web/saucedemo/productPage'
+import { SDCartPage } from '@pages/web/saucedemo/cartPage'
+import { SDCheckoutPage } from '@pages/web/saucedemo/checkoutPage'
 
 
 /**
