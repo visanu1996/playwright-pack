@@ -5,6 +5,8 @@ import {
   chromium,
 } from "@playwright/test";
 import { globalWait } from "../config/config";
+import { remote } from 'webdriverio'
+import { mobileConnection } from "@config/secret";
 
 /**
  * WebDriver
@@ -33,4 +35,24 @@ export class WebDriver {
     console.log(`Browser and Context successfully closed.`)
   }
 
+}
+
+export class MobileDriver {
+  public driver !: WebdriverIO.Browser
+
+  async sleep(ms: number){
+    return new Promise((resolve) => setTimeout(resolve,ms));
+  }
+
+  async createConnection(){
+    console.log(`Connecting to Appium...`);
+    this.driver = await remote(mobileConnection)
+    console.log(`Connection successful! Session ID: ${this.driver.sessionId}`);
+    
+  }
+
+  async closeConnection(){
+    await this.driver?.deleteSession()
+  }
+  
 }

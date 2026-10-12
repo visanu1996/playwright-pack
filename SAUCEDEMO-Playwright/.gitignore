@@ -10,7 +10,8 @@ playwright/.auth/
 test-results/
 old/
 allure-results/
-# SAUCEDEMO-Playwright/TypeScript/config/testdata.ts      # for test no need to ignore secret or config.
+TypeScript/src/config/secret.ts
+# SAUCEDEMO-Playwright/TypeScript/config/testdata.ts      # for test no need to ignore config.
 
 # Playwright - Robot (Browser Lib)
 *.pyc
