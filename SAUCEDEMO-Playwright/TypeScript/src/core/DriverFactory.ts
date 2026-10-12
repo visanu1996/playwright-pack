@@ -6,6 +6,13 @@ import {
 } from "@playwright/test";
 import { globalWait, isHeadless } from "../config/config";
 
+/**
+ * WebDriver
+ *
+ * Owns the active Playwright browser, context, and page references used by the
+ * page-object layer. Each test creates a WebDriver instance, starts Chromium,
+ * and then shares the active page via the BasePage helpers.
+ */
 export class WebDriver {
   public pages: Record<string, Page> = {};
   public page!: Page;
@@ -26,4 +33,14 @@ export class WebDriver {
     console.log(`Browser and Context successfully closed.`)
   }
 
+}
+
+/**
+ * MobileDriver
+ *
+ * Reserved for mobile/browser-device automation scenarios if this project is
+ * extended to run on mobile viewports or emulated device contexts.
+ */
+export class MobileDriver{
+  
 }

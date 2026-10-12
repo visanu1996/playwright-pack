@@ -1,5 +1,10 @@
 import { CommonSD } from "@pages/saucedemo/CommonSD"
 
+/**
+ * SDLoginPage
+ *
+ * Handles SauceDemo login actions and validation for login errors.
+ */
 export class SDLoginPage extends CommonSD {
     protected loginPageLocators = {
         loginLogo:"xpath=//div[@class='login_logo']",

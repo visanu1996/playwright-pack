@@ -1,5 +1,12 @@
 import { APIRequestContext, APIResponse, expect, request } from '@playwright/test'
 
+/**
+ * API
+ *
+ * Lightweight Playwright API client wrapper for HTTP validation flows. It
+ * manages the request context, sets default headers, and provides reusable
+ * response assertions for status codes and JSON payloads.
+ */
 export class API {
     protected client !: APIRequestContext
     protected headers : Record<string, any> = {'Content-Type':'application/json'}

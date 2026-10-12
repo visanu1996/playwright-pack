@@ -1,5 +1,11 @@
 import { BasePage } from "@src/core/BasePage";
 
+/**
+ * UploadPage
+ *
+ * Page object for the file-upload demo flow. It centralizes file selection and
+ * form submission for the expandtesting upload scenario.
+ */
 export class UploadPage extends BasePage {
     protected uploadPageLocator = {
         fileInput : "xpath=//input[@data-testid='file-input']",

@@ -8,13 +8,12 @@ import * as secret from '../config/testdata'
 /**
  * BasePage
  *
- * Thin wrapper around `WebDriverManagement` used by page objects.
+ * Shared helper layer for Playwright page objects in the TypeScript project.
+ * It wraps the active browser page/context and centralizes common actions such
+ * as clicking, typing, navigation, file uploads, and assertion helpers.
  *
- * - Forwards constructor arguments to `WebDriverManagement` using
- *   `ConstructorParameters<typeof WebDriverManagement>` so the concrete
- *   parameter types are preserved.
- * - Use `this.<prop>` to access inherited instance properties.
- * - args: [page: Page, browser: Browser, context: BrowserContext]
+ * This class is intended to be extended by page-specific classes so each page
+ * object can focus on UI logic instead of duplicating boilerplate.
  */
 
 export abstract class BasePage {

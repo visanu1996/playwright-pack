@@ -1,5 +1,11 @@
 import { BasePage } from "@core/BasePage"
 
+/**
+ * SDCartPage
+ *
+ * Represents the SauceDemo cart page. Contains helpers for verifying item
+ * presence, removing items, and continuing to checkout.
+ */
 export class SDCartPage extends BasePage{
     
     cartPageLocators = {

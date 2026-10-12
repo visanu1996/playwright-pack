@@ -1,5 +1,12 @@
 import { BasePage } from "@src/core/BasePage";
 
+/**
+ * CommonSD
+ *
+ * Shared SauceDemo page actions and navigation helpers. This class centralizes
+ * common UI behavior such as menu interactions, page transitions, and toast
+ * validation used across login, cart, and checkout flows.
+ */
 export class CommonSD extends BasePage {
     protected commonLocators = {
         burger: "xpath=//button[@id='react-burger-menu-btn']",
@@ -57,16 +64,6 @@ export class CommonSD extends BasePage {
             await this.page.goto(this.commonLocators.pages[pageName])
         } else {
             await this.page.locator(this.commonLocators.pages[pageName]).click()
-        }
-    }
-
-    protected async verifyToast(locator: string,errorText: string) {
-        let element = this.page.locator(locator)
-
-        if (await element.isVisible()) {
-            await this.expect(element).toContainText(errorText)
-        } else {
-            throw new Error('No Toast were found on this page.')
         }
     }
 

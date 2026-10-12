@@ -1,5 +1,11 @@
 import { BasePage } from "@core/BasePage";
 
+/**
+ * SDProductPage
+ *
+ * Encapsulates product inventory interactions such as adding/removing items,
+ * filtering, and validating selected quantities on the SauceDemo products page.
+ */
 export class SDProductPage extends BasePage{
     public productPageLocators = {
         productHeader: "xpath=//span[@class='title' and text()='Products']",
