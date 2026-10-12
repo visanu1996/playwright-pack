@@ -13,8 +13,8 @@ test.describe('Product', () => {
 
         await wd.startBrowser()
         await sauce.createSDPage()
-        await sauce.runLoginTest('standard_user', 'secret_sauce')
-        await sauce.verifyPageArrive(sauce.product.productPageLocators.productHeader)
+        await sauce.login.LoginSauce('standard_user', 'secret_sauce')
+        await sauce.verifySDPageArrive('product')
     });
     
     test.afterEach(async () => {
@@ -23,14 +23,14 @@ test.describe('Product', () => {
     });
 
     test('TC001 Add valid products', async () => {
-        await sauce.runAddProductTest('Backpack', 'Bike Light', 'Bolt T-Shirt')
+        await sauce.product.addItems('Backpack', 'Bike Light', 'Bolt T-Shirt')
         await sauce.product.countItems(3)
         
     });
     
     test('TC002 Remove valid products', async () => {
-        await sauce.runAddProductTest('Backpack', 'Bike Light', 'Bolt T-Shirt')
-        await sauce.runRemoveProductTest('Backpack', 'Bolt T-Shirt')
+        await sauce.product.addItems('Backpack', 'Bike Light', 'Bolt T-Shirt')
+        await sauce.product.removeItems('Backpack', 'Bolt T-Shirt')
         await sauce.product.countItems(1)
 
     });

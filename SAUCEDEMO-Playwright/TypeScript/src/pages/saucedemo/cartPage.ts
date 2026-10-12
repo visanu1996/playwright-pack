@@ -19,7 +19,7 @@ export class SDCartPage extends BasePage{
     * @param products - e.g., "Backpack", "Jacket")
     * @returns none.
      */
-    async removeProduct(...products:string[]){
+    async removeCartItems(...products:string[]){
         for(let product of products){
             const itemBox = this.cartPageLocators.cartItem.replace('[TO_CHANGE]', product)
             const removeBtn = itemBox + this.cartPageLocators.removeBtn
@@ -37,6 +37,16 @@ export class SDCartPage extends BasePage{
             console.log(`Confirm item in cart : ${product}`)
         }   
     }
+
+    async verifyItemNotInCart(...products: string[]){
+        for(const product of products){
+            const itemBox = this.cartPageLocators.cartItem.replace('[TO_CHANGE]',product)
+            const removeItemBtn = itemBox+this.cartPageLocators.removeBtn
+            await this.expect(this.page.locator(removeItemBtn)).not.toBeVisible()
+            console.log(`Confirm item not in cart : ${product}`)
+        }
+    }
+
      async backToShopping() {
         await this.clickElement(this.cartPageLocators.backToShopping)
     }

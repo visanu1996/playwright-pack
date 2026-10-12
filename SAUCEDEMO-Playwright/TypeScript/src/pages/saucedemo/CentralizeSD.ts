@@ -1,4 +1,4 @@
-import { BasePage } from "@core/BasePage"
+import { CommonSD } from "@pages/saucedemo/CommonSD"
 import { WebDriver } from "@core/DriverFactory"
 import { SDLoginPage } from '@pages/saucedemo/loginPage'
 import { SDProductPage } from '@pages/saucedemo/productPage'
@@ -31,7 +31,7 @@ import { SDCheckoutPage } from '@pages/saucedemo/checkoutPage'
  * @property {SDCartPage} cart - cart page helper
  * @property {SDCheckoutPage} checkout - checkout page helper
  */
-export class CentralizeSD extends BasePage {
+export class CentralizeSD extends CommonSD {
     public login: SDLoginPage
     public product: SDProductPage
     public cart: SDCartPage
@@ -43,25 +43,6 @@ export class CentralizeSD extends BasePage {
         this.product = new SDProductPage(wd)
         this.cart = new SDCartPage(wd)
         this.checkout = new SDCheckoutPage(wd)
-    }
-
-    protected common_locators = {
-        burger: "xpath=//button[@id='react-burger-menu-btn']",
-        menuBar: {
-            allItems: "xpath=//a[text()='All Items']",
-            about: "xpath=//a[text()='About']",
-            logout: "xpath=//a[text()='Logout']",
-            resetAppState: "xpath=//a[text()='Reset App State']",
-            closeMenu: "xpath=//button[text()='Close Menu']"
-        },
-        pages: {
-            cart: "xpath=//a[@class='shopping_cart_link']",
-            cartLink: "https://www.saucedemo.com/cart.html",
-            productLink: "https://www.saucedemo.com/inventory.html",
-            checkout: "https://www.saucedemo.com/checkout-step-one.html",
-        },
-        toast: "xpath=//h3[@data-test='error']"
-
     }
 
     /**
@@ -88,127 +69,5 @@ export class CentralizeSD extends BasePage {
         // Step 5 : Log out.
         await this.menuSelect("logout")
     }
-// -------------------------------------- Sauce Demo Common Functions. --------------------------------------
-    /**
-     * Click a menu based on selected menu name
-     * @param menuName - The menu key (e.g., "about", "logout")
-     * @returns none.
-     */
-    async menuSelect(menuName: keyof typeof this.common_locators.menuBar) {
-        if (menuName in this.common_locators.menuBar) {
-            await this.page.locator(this.common_locators.burger).click()
-            await this.page.locator(this.common_locators.menuBar[menuName]).waitFor({ 'state': 'visible' })
-            await this.page.locator(this.common_locators.menuBar[menuName]).click({ force: true })
-
-            let closeMenuBtn = this.page.locator(this.common_locators.menuBar['closeMenu'])
-            if (await closeMenuBtn.isVisible()) closeMenuBtn.click()
-
-        } else {
-            console.log(`There is no such a key named [${menuName}] in menu bar.`);
-
-        }
-    }
-
-    async gotoPage(pageName: keyof typeof this.common_locators.pages, byLink: boolean = false) {
-        if (byLink) {
-            await this.page.goto(this.common_locators.pages[pageName])
-        } else {
-            await this.page.locator(this.common_locators.pages[pageName]).click()
-        }
-    }
-
-    // async ToastError(errorText: string) {
-    //     let locator = this.page.locator(this.common_locators['toast'])
-
-    //     if (await locator.isVisible()) {
-    //         await this.expect(locator).toContainText(errorText)
-    //     } else {
-    //         throw new Error('No Toast were found on this page.')
-    //     }
-    // }
-
-
-
-    // -------------------------------------- test module functions. --------------------------------------
-    /**
-     * Test login valid or invalid credentials, also check toast and it message if it's needed.
-     * Use in sauce common for centralize reasons.
-     * @param username  as a username for login.
-     * @param pass as a password for login.
-     * @param checkToast default is false, use to check that Toast is popped or not.
-     * @param errorText use with checkToast to see the expected contains text from toast.
-     * @returns none.
-     */
-    async runLoginTest(username: string, pass: string, options?:{checkToast?: boolean , errorText: string}) {
-        await this.login.LoginSauce(username, pass)
-        if (options?.checkToast) {
-            await this.verifyToast(this.common_locators.toast,options.errorText)
-            console.log(`Toast error match!`)
-        }
-    }
-
-    /**
-    * Test login valid or invalid credentials, also check toast and it message if it's needed.
-    * Use in sauce common for centralize reasons.
-    * @param fName  as firstname.
-    * @param lName as lastname.
-    * @param zipCode as a zipcode
-    * @param checkToast default is false, use to check that Toast is popped or not.
-    * @param errorText use with checkToast to see the expected contains text from toast.
-    * @returns none.
-    */
-    async runCheckoutTest(fName: string, lName: string, zipCode: string, options?:{checkToast?: boolean, Msg: string}) {
-        await this.checkout.FillInformation(fName, lName, zipCode)
-        if (options?.checkToast) {
-            await this.verifyToast(this.common_locators.toast,options.Msg)
-            console.log('Toast error match!')
-        }
-    }
     
-    async backToShoppingTest() {
-        await this.cart.backToShopping()
-    }
-
-    async commitPurchaseTest() {
-        await this.cart.commitPurchase()
-    }
-
-    /**
-     * Add product into the cart based on given name.
-     * Use in sauce common for centralize reasons.
-     * @param products as array(e.g., "Bike Light", "Fleeces")
-     * @param [isAdd=true] add item if true, remove if false, default is true
-     * @returns none.
-     */
-    async runAddProductTest(...products: string[]) {
-        await this.product.addItems(...products)
-    }
-
-    /**
-     * Remove product into the cart based on given name.
-     * Use in sauce common for centralize reasons.
-     * @param products as array(e.g., "Bike Light", "Fleeces")
-     * @param [isAdd=true] add item if true, remove if false, default is true
-     * @returns none.
-     */
-    async runRemoveProductTest(...products: string[]) {
-        await this.product.removeItems(...products)
-    }
-
-    /**
-     * Remove items from cart.
-     * @param products  products as array. (e.g., "Bike Light", "Fleeces")
-     * @returns none
-     */
-    async removeCartItemsTest(...products: string[]) {
-        await this.cart.removeProduct(...products)
-    }
-
-    async verifyItemsInCartTest(...products: string[]) {
-        await this.cart.verifyItemInCart(...products)
-    }
-
-    async createSDPage(){
-        await this.createPage(this.config.webURL.SD, "SD")
-    }
 }

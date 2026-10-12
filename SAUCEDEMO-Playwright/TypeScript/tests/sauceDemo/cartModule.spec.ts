@@ -12,8 +12,8 @@ test.describe('Cart', () => {
         
         await wd.startBrowser()
         await sauce.createSDPage()
-        await sauce.runLoginTest('standard_user', 'secret_sauce')
-        await sauce.verifyPageArrive(sauce.product.productPageLocators.productHeader)
+        await sauce.login.LoginSauce('standard_user', 'secret_sauce')
+        await sauce.verifySDPageArrive('product')
     })
 
     test.afterEach(async () => {
@@ -21,24 +21,26 @@ test.describe('Cart', () => {
     });
 
     test('TC001 Add valid products and check it from cart', async () => {
-        await sauce.runAddProductTest('Backpack', 'Bike Light', 'Bolt T-Shirt')
+        await sauce.product.addItems('Backpack', 'Bike Light', 'Bolt T-Shirt')
         await sauce.gotoPage("cart")
-        await sauce.verifyItemsInCartTest('Backpack', 'Bike Light', 'Bolt T-Shirt')
+        await sauce.cart.verifyItemInCart('Backpack', 'Bike Light', 'Bolt T-Shirt')
     });
 
     test('TC002 Remove item from cart', async () => {
-        await sauce.runAddProductTest('Backpack', 'Bike Light', 'Bolt T-Shirt')
+        await sauce.product.addItems('Backpack', 'Bike Light', 'Bolt T-Shirt')
         await sauce.gotoPage("cart")
-        await sauce.removeCartItemsTest('Backpack', 'Bolt T-Shirt')
+        await sauce.cart.removeCartItems('Backpack', 'Bolt T-Shirt')
+        await sauce.cart.verifyItemNotInCart('Backpack', 'Bolt T-Shirt')
+
     });
 
     test('TC003 Continue Shoping then add new items and commit purchases', async () => {
-        await sauce.runAddProductTest('Bike Light', 'Bolt T-Shirt')
+        await sauce.product.addItems('Bike Light', 'Bolt T-Shirt')
         await sauce.gotoPage("cart")
-        await sauce.backToShoppingTest()
-        await sauce.runAddProductTest('Backpack')
+        await sauce.cart.backToShopping()
+        await sauce.product.addItems('Backpack')
         await sauce.gotoPage("cartLink", true)
-        await sauce.verifyItemsInCartTest('Backpack', 'Bike Light')
-        await sauce.commitPurchaseTest()
+        await sauce.cart.verifyItemInCart('Backpack', 'Bike Light', 'Bolt T-Shirt')
+        await sauce.cart.commitPurchase()
     });
 })

@@ -43,7 +43,7 @@ export abstract class BasePage {
     return this.wd.context
   }
 
-  async verifyPageArrive(locator: string, timeout?: number){
+  protected async verifyPageArrive(locator: string, timeout?: number){
     await this.expect(this.page.locator(locator)).toBeVisible({timeout:timeout})
   }
 

@@ -11,6 +11,7 @@ test.describe('Login', () => {
         sauce = new CentralizeSD(wd)
         await wd.startBrowser()
         await sauce.createSDPage()
+        await sauce.verifySDPageArrive('login')
         // let video = sauce.page.video()
     });
 
@@ -19,22 +20,27 @@ test.describe('Login', () => {
     });
 
     test('TC001 Login with lock credential', async () => {
-        await sauce.runLoginTest('locked_out_user', 'secret_sauce', {checkToast:true, errorText:'locked out.'})
+        await sauce.login.LoginSauce('locked_out_user', 'secret_sauce')
+        await sauce.login.verifyLoginToast('locked out.')
     });
 
     test('TC002 Login with wrong cred', async () => {
-        await sauce.runLoginTest('wrong', 'secret_sauce', { checkToast: true, errorText: 'not match' })
+        await sauce.login.LoginSauce('wrong', 'secret_sauce')
+        await sauce.login.verifyLoginToast('not match')
     });
     
     test('TC003 Login without password', async () => {
-        await sauce.runLoginTest('wrong', '', { checkToast: true, errorText: 'Password is required' })
+        await sauce.login.LoginSauce('wrong', '')
+        await sauce.login.verifyLoginToast('Password is required')
     });
     
     test('TC004 Login without username', async () => {
-        await sauce.runLoginTest('', 'secret_sauce', { checkToast: true, errorText: 'Username is required' })
+        await sauce.login.LoginSauce('', 'secret_sauce')
+        await sauce.login.verifyLoginToast('Username is required')
     });
     
     test('TC005 Login with valid credential', async () => {
-        await sauce.runLoginTest('standard_user', 'secret_sauce')
+        await sauce.login.LoginSauce('standard_user', 'secret_sauce')
+        await sauce.verifySDPageArrive('product')
     });
 });

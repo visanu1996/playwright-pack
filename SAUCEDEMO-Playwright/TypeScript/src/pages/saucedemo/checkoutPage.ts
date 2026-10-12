@@ -29,12 +29,12 @@ export class SDCheckoutPage extends BasePage {
             itemPrice: "//div[@class='item_pricebar']"
         },
         confirmShippingBtn: "xpath=//button[@id='finish']",
-        // sub page - Complete
         completePageHeader: "xpath=//span[@class='title' and text()='Checkout: Complete!']",
-        // msgHeader: "xpath=//h2[contains(text(),'Thank you for your order!')]",
         msgHeader: "xpath=//h2[@class='complete-header']",
         msgDetail: "xpath=(//h2[@class='complete-header']/following-sibling::div)[1]",
-        backToHomeBtn: "xpath=//button[@id='back-to-products']"
+        backToHomeBtn: "xpath=//button[@id='back-to-products']",
+        toast : 'xpath=//h3[@data-test="error"]'
+
     }
     /**
     * Fill checkout information.
@@ -105,5 +105,9 @@ export class SDCheckoutPage extends BasePage {
         console.log(messageDetail);
         
         await this.clickElement(this.checkoutPageLocators.backToHomeBtn)
+    }
+
+    async verifyCheckoutToast(msg: string){
+        await this.verifyToast(this.checkoutPageLocators.toast,msg)
     }
 }
