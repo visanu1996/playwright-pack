@@ -1,7 +1,6 @@
 /// <reference types="@wdio/globals/types">
 import { Selector } from 'webdriverio'
 import { expect } from 'expect-webdriverio'
-
 import { MobileDriver } from './DriverFactory'
 
 export abstract class BaseMobile {
@@ -59,7 +58,7 @@ export abstract class BaseMobile {
 
     async swipeToText(text: string){
         const targetElement = await this.driver.$(
-        `android=new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(new UiSelector().text(${text}))`
+        `android=new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(new UiSelector().text("${text}"))`
         )
 
     }
