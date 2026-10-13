@@ -56,6 +56,8 @@ TypeScript/
 
 ## Prerequisites
 
+### Web / Playwright prerequisites
+
 Make sure Node.js and npm are installed, then run:
 
 ```bash
@@ -69,7 +71,7 @@ If you are setting up a fresh Playwright project and the project files are missi
 npm init playwright@latest
 ```
 
-Before running the tests for the first time, install the browser binary required by Playwright:
+Before running the browser tests for the first time, install the Chromium browser binary required by Playwright:
 
 ```bash
 npx playwright install chromium
@@ -77,7 +79,34 @@ npx playwright install chromium
 
 > This step is usually required before the first local execution. Without it, browser tests will fail with a missing browser error.
 
+### Mobile / WDIO prerequisites
+
+For native mobile automation, install the required SDKs and tooling on the machine that will run the mobile tests:
+
+- Java JDK
+- Android SDK / Android Studio
+- Android emulator or real device connected via USB
+- Appium Server
+- Node.js and npm
+- mobile app under test installed on the emulator/device
+
+Start Appium before running mobile tests:
+
+```bash
+appium
+```
+
+If you are using an Android emulator, make sure the emulator is already running and reachable:
+
+```bash
+adb devices
+```
+
+> The mobile flow is separate from the Playwright browser flow and should be run in its own environment or project setup when the mobile app is being tested.
+
 ## Run the test suite
+
+### Run the web tests
 
 Run all Playwright tests:
 
@@ -110,6 +139,27 @@ Open the HTML report:
 ```bash
 npx playwright show-report
 ```
+
+### Run the mobile tests
+
+If the mobile flow is set up in a separate WDIO/Appium project, run it from that project folder:
+
+```bash
+cd ../mobile-project
+npx wdio run wdio.conf.ts
+```
+
+If the mobile project is in the same workspace, keep the mobile commands separate from the Playwright browser commands to avoid module conflicts between Playwright and WebdriverIO.
+
+### Run the project with a TS test runner
+
+For Node/TypeScript test execution that does not use Playwright directly:
+
+```bash
+npx tsx --test tests/**/*.test.ts
+```
+
+This is useful for lightweight TypeScript-based test runs, but the browser report and browser automation are still best handled by Playwright when the app is a web app.
 
 ## Configuration highlights
 
